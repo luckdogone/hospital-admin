@@ -1,0 +1,122 @@
+application:
+  version: 5.0.0
+server:
+  port: 8088
+spring:
+  application:
+    name: boot-admin
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://121.41.6.58:3306/hospital_admin?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+    username: root
+    password: tmy1971.Y
+  data:
+    redis:
+      host: 121.41.6.58
+      port: 6379
+      database: 0
+      password: bxl3158.
+  quartz:
+    # 数据库存储
+    job-store-type: jdbc
+    # Scheduler 名字。
+    #    scheduler-name: clusteredScheduler
+    # Quartz 是否自动启动
+    auto-startup: true
+    # 延迟 N 秒启动
+    startup-delay: 0
+    # 应用关闭时，是否等待定时任务执行完成
+    wait-for-jobs-to-complete-on-shutdown: true
+    # 启动时更新己存在的Job
+    overwrite-existing-jobs: true
+    # jdbc
+    jdbc:
+      # 初始化scheme
+      initialize-schema: never
+    # 添加 Quartz Scheduler 附加属性，更多可以看 http://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html 文档
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: MyScheduler
+            instanceId: AUTO
+          jobStore:
+            # org.springframework.scheduling.quartz.ScheduleFactoryBean L575
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: QRTZ_
+            isClustered: true
+            misfireThreshold: 60000
+            clusterCheckinInterval: 10000
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+# mybatis plus 设置
+mybatis-plus:
+  mapper-locations:
+    - classpath*:com/spring/admin/**/xml/*.xml
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 返回类型为Map,显示null对应的字段
+    call-setters-on-nulls: true
+logging:
+  level:
+    root: info
+    com.hb0730: debug
+boot:
+  admin:
+    cache:
+      prefix: boot:admin:cache
+    refresh-routes: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'system'
+      display-name: "系统管理"
+      paths-to-match:
+        - /sys/**
+    - group: "auth"
+      display-name: "权限管理"
+      paths-to-match:
+        - /auth/**
+    - group: "monitor"
+      display-name: "监控管理"
+      paths-to-match:
+        - /monitor/**
+  default-produces-media-type: application/json;charset=UTF-8
+  default-consumes-media-type: application/json;charset=UTF-8
+
+# 增强 swaager
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+security:
+  jwt:
+    # token有效时间 2小时
+    token-validity: 7200
+    # 自动延长token 默认：true
+    delay-token: true
+    # token 续期检查,单位秒 默认: 30分钟
+    token-detect: 1800
+    # jwt 密钥
+    jwt-secret: "ZmQ0ZGI5NjQ0MDQwY2I4MjMxY2Y3ZmI3MjdhN2ZmMjNhODViOTg1ZGE0NTBjMGM4NDA5NzYxMjdjOWMwYWRmZTBlZjlhNGY3ZTg4Y2U3YTE1ODVkZDU5Y2Y3OGYwZWE1NzUzNWQ2YjFjZDc0NGMxZWU2MmQ3MjY1NzJmNTE0MzI="
+  login:
+    # 登录私钥
+    rsa-private-key: "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAMrQcDp20jeUyb5rLO3jg3R6UlA0/U6WdzSXn7T4Sz7Z/F5hxeYiJ+F7+WsXbhGF085O4xivW0eeSZkrEKiO/ssaXELfE106vS3J9izYQNKKMM92chalWWSb7nLNLjhHnERiZpZKTdjRmqDc1NeyO7UoY3dIX1vmetPClFKeZDZ9AgMBAAECgYA8MOQ91anJ6RR+uNwatdz7opnvR+qteiZiq2UwlkfunU8yy52qERT47Iw3Zjq6ZJdZsTvgxZo3hRieppNJEzc2k8tQNtSEGG/WqSVhz3E5QuFxE0nse7qpEG2vuJH6CoyXZ4T3dqL+AybUxxqXDcke+YEAZrVEPqPeUF1B1NgK2QJBAMxIXI/2nXA5teIBktt7jAoao6fsapsi+yrkvBNVKjTWZbb/dAUGp5Jh+2izkQAZZoDArZleIfUaL/F6oDvDYNcCQQD+KOfwcSGmm821hK+dYq7fjd3TYQF96toRNYPJLCALrvf3IcHnbWf486A+CuzSMbkZuVlCDfReubvY81cec3TLAkBF+ygSfWZz0qFXWjioDcvsjjGwThI7MSGgERnI+azqyuOvbBWfvybaw8wvkwxCX3E4/Ei8OH4jjCQOcna/4m+jAkB5oxAmBa7KMwTHW8JEe4cf3KCOWn3BSpWk6MyyidioXsuzzcckQDsjbU2Cg+4FRuDEi+1I7K7IavGZChTmsPDzAkAudsivcNXIiWJBVuBwywwnMxLytK856FW0yEf/ffIs4NKFXUubCuCer0sCCSVeYXdzCGv2nnPxce5oqfcerHK1"
+    # 登录公钥
+    rsa-public-key: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDK0HA6dtI3lMm+ayzt44N0elJQNP1Olnc0l5+0+Es+2fxeYcXmIifhe/lrF24RhdPOTuMYr1tHnkmZKxCojv7LGlxC3xNdOr0tyfYs2EDSijDPdnIWpVlkm+5yzS44R5xEYmaWSk3Y0Zqg3NTXsju1KGN3SF9b5nrTwpRSnmQ2fQIDAQAB"

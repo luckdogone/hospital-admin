@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.admin.modules.sys.system.mapper.SysUserMapper">
+    <sql id="Base_sql">
+        t.id,t.created_by
+        ,t.created,t.modified_by,t.modified,t.username,t.password,t.nickname,t.phone,t.is_enabled,t.email,t.org_id,t.is_manage
+    </sql>
+    <select id="getRoleCodeByUsername" resultType="java.lang.String">
+        select t.role_code
+        from sys_role t,
+             sys_user_role t1,
+             sys_user t2
+        where t.id = t1.role_id
+          AND t.is_enable = 1
+          and t1.user_id = t2.id
+          and t2.username = #{username}
+    </select>
+    <!-- 根据角色ID 获取对应的权限ID集合 -->
+    <select id="queryUserRole" resultType="java.lang.String">
+        SELECT ur.role_id
+        FROM sys_user_role ur, sys_role r
+        WHERE 1 = 1  AND ur.role_id = r.id AND r.is_enable = 1 AND ur.user_id = #{userId}
+    </select>
+    <select id="allRoleCode" resultType="java.lang.String">
+        SELECT
+            a.role_code
+        FROM sys_role a
+        WHERE  a.is_enable=1
+    </select>
+    <select id="queryPage" resultType="com.spring.admin.modules.sys.system.model.vo.UserVO">
+        SELECT
+            <include refid="Base_sql"/>,t1.name as org_name,t1.code as org_code
+        FROM `sys_user` t
+        LEFT JOIN sys_org t1 ON t.org_id = t1.id
+        WHERE 1=1
+        <if test="query.username!=null and query.username!=''">
+            AND t.username LIKE CONCAT('%',#{query.username},'%')
+        </if>
+        <if test="query.nickname!=null and query.nickname!=''">
+            AND t.nickname LIKE CONCAT('%',#{query.nickname},'%')
+        </if>
+        <if test="query.phone!=null and query.phone!=''">
+            AND t.phone = #{query.phone}
+        </if>
+        <if test="query.orgId!=null and query.orgId!=''">
+            AND t.org_id = #{query.orgId}
+        </if>
+        <if test="query.enable != null ">
+            AND t.is_enabled = #{query.enable}
+        </if>
+        ORDER BY t.modified DESC
+    </select>
+    <select id="getByUsername" resultType="com.spring.admin.modules.sys.system.model.entity.SysUser">
+        SELECT
+        <include refid="Base_sql"/>
+        FROM `sys_user` t
+        WHERE t.username = #{username}
+    </select>
+    <insert id="saveUserRole">
+        INSERT INTO sys_user_role (id,user_id, role_id) VALUES
+        <foreach collection="roleIds" item="item" index="index" separator=",">
+            (md5(uuid()),#{userId}, #{item})
+        </foreach>
+    </insert>
+    <delete id="delUserRoleByUserid">
+        DELETE FROM sys_user_role WHERE user_id = #{userId}
+    </delete>
+    <delete id="delUserRoleByUserids">
+        DELETE FROM sys_user_role WHERE user_id in
+        <foreach collection="userIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+    <update id="resetPassword">
+        UPDATE sys_user
+        SET password = #{password}
+        WHERE username = #{username}
+    </update>
+
+
+</mapper>
