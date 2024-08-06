@@ -6,8 +6,8 @@ import com.spring.admin.modules.sys.system.model.entity.SysRole;
 /**
  * 角色信息
  *
- * 
- * @date 2023/2/28
+ * @author 李飞洋
+ * @date 2024/6/28
  */
 public interface SysRoleMapper extends BaseMapper<SysRole> {
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.admin.modules.sys.core.mapper.PatientInfoMapper">
+    <sql id="Base_patient">
+        t.id,
+        t.name,
+        t.sex,
+        t.age,
+        t.address,
+        t.phone,
+        t.contact_phone,
+        t.height,
+        t.weight,
+        t.input_status,
+        t.created_by,
+        t.created,
+        t.modified_by,
+        t.modified,
+        t.is_enable,
+        t.is_del,
+        CASE
+            WHEN t.height > 0 THEN ROUND(t.weight / (t.height * t.height / 10000), 2)
+            ELSE NULL
+        END AS bmi
+    </sql>
+    <select id="queryPage" resultType="com.spring.admin.modules.sys.core.model.entity.PatientInfo">
+        SELECT
+        <include refid="Base_patient"/>
+        from patient_info t
+        WHERE 1=1
+        <if test="query.phone != null and query.phone != ''">
+            and  t.phone = #{query.phone}
+        </if>
+        <if test="query.contactPhone != null and query.contactPhone != ''">
+            and t.contact_phone = #{query.contactPhone}
+        </if>
+        <if test="query.inputStatus != null and query.inputStatus != ''">
+            and t.input_status = #{query.inputStatus}
+        </if>
+        <if test="query.name != null and query.name != ''">
+            and t.name like concat('%',#{query.name},'%')
+        </if>
+        <if test="query.isEnable != null">
+            and t.is_enable = #{query.isEnable}
+        </if>
+        <if test="query.isDel != null">
+            and t.is_del = #{query.isDel}
+        </if>
+        order by t.created desc
+    </select>
+</mapper>

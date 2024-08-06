@@ -81,6 +81,7 @@ public class WebSecurityConfiguration {
                 "/*/*.js",
                 "/webSocket/**"
             ).permitAll()
+                .requestMatchers("/core/**").permitAll()
             //对于登录login  开放
             .requestMatchers("/auth/**", "/favicon.ico").permitAll()
             // options 开放
