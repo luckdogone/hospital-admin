@@ -32,7 +32,7 @@ public class PatientInfoController {
 
     @GetMapping("/query/page")
     @Operation(summary = "分页查询")
-//    @PreAuthorize("hasAuthority('org:query')")
+    @PreAuthorize("hasAuthority('patient:query:page')")
     public R<BasePage<PatientInfo>> getListPage(HttpServletRequest request, @ParameterObject PatientInfoQuery query) {
         BasePage<PatientInfo> page = patientInfoService.queryPage(query);
         return R.OK(page);
@@ -40,6 +40,7 @@ public class PatientInfoController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表")
+    @PreAuthorize("hasAuthority('patient:query:list')")
     public R<List<PatientInfo>> getList(HttpServletRequest request, @ParameterObject PatientInfoQuery query) {
         List<PatientInfo> res = patientInfoService.queryList(query);
         return R.OK(res);
@@ -47,18 +48,20 @@ public class PatientInfoController {
 
     @PostMapping("/save")
     @Operation(summary = "保存信息")
-    @PreAuthorize("hasAuthority('org:save')")
+    @PreAuthorize("hasAuthority('patient:save')")
     public R<PatientInfo> save(HttpServletRequest request, @RequestBody PatientInfo vo) {
         vo.setCreatedBy(SecurityUtil.getCurrentUsername());
         vo.setCreated(LocalDateTime.now());
+        vo.setInputStatus(0);
+        vo.setIsEnable(1);
         vo.setIsDel(1);
         return patientInfoService.savePatientInfo(vo);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     @Operation(summary = "更新信息")
-    @PreAuthorize("hasAuthority('org:update')")
-    public R<PatientInfo> update(HttpServletRequest request, @PathVariable("id") String id,
+    @PreAuthorize("hasAuthority('patient:update')")
+    public R<PatientInfo> update(HttpServletRequest request, String id,
                                     @RequestBody PatientInfo vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());
         vo.setModified(LocalDateTime.now());
@@ -67,7 +70,7 @@ public class PatientInfoController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除信息")
-    @PreAuthorize("hasAuthority('org:del')")
+    @PreAuthorize("hasAuthority('patient:del')")
     public R<String> del(HttpServletRequest request, @RequestBody List<String> ids) {
         return patientInfoService.batchDel(ids);
     }

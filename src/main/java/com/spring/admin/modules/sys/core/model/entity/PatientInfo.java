@@ -69,6 +69,7 @@ public class PatientInfo extends BaseEntity {
     /**
      * bmi
      */
+    @TableField(exist = false)
     @Schema(description = "bmi = weight / ( height * height )")
     private Double bmi;
 

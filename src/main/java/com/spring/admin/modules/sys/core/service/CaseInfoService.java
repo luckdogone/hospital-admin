@@ -3,17 +3,13 @@ package com.spring.admin.modules.sys.core.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.spring.admin.base.R;
 import com.spring.admin.core.service.BaseServiceImpl;
-import com.spring.admin.modules.sys.core.mapper.GeneralInfoMapper;
+import com.spring.admin.modules.sys.core.mapper.CaseInfoMapper;
+import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
 import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
+import com.spring.admin.modules.sys.core.model.query.CaseInfoQuery;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
-import com.spring.admin.modules.sys.system.model.entity.SysRole;
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,12 +19,12 @@ import java.util.List;
 
 /**
  * @author 李飞洋
- * @date 2024/8/6
+ * @date 2024/8/13
  */
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, GeneralInfo> {
+public class CaseInfoService extends BaseServiceImpl<CaseInfoMapper, CaseInfo> {
 
     /**
      * 获取一般信息
@@ -36,40 +32,22 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
      * @param query .
      * @return .
      */
-    public List<GeneralInfo> queryList(GeneralInfoQuery query) {
+    public List<CaseInfo> queryList(CaseInfoQuery query) {
         return this.baseMapper.queryPage(null, query);
-    }
-
-    /**
-     * 检查code是否重复
-     *
-     * @param code .
-     * @param id   需要排查的ID，可以为空
-     * @return .
-     */
-    public boolean checkCode(@Nonnull String code, @Nullable String id) {
-        LambdaQueryWrapper<GeneralInfo> queryWrapper = Wrappers.lambdaQuery(GeneralInfo.class)
-                .eq(GeneralInfo::getSurgicalNum, code)
-                //排除已标记删除的记录
-                .ne(GeneralInfo::getIsDel, 0);
-        if (StrUtil.isNotBlank(id)) {
-            queryWrapper.ne(GeneralInfo::getId, id);
-        }
-        return count(queryWrapper) > 0;
     }
 
     /**
      * 保存信息
      *
-     * @param generalInfo .
+     * @param caseInfo .
      * @return .
      */
-    public R<GeneralInfo> saveGeneralInfo(GeneralInfo generalInfo) {
+    public R<CaseInfo> saveCaseInfo(CaseInfo caseInfo) {
         // set Id
-        generalInfo.setId(IdUtil.fastSimpleUUID());
+        caseInfo.setId(IdUtil.fastSimpleUUID());
         // save
-        save(generalInfo);
-        return R.OK(generalInfo);
+        save(caseInfo);
+        return R.OK(caseInfo);
     }
 
     /**
@@ -79,10 +57,13 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
      * @param vo .
      * @return .
      */
-    public R<GeneralInfo> updateById(String id, GeneralInfo vo) {
-        GeneralInfo generalInfo = getById(id);
-        BeanUtil.copyProperties(vo, generalInfo, "id");
-        updateById(generalInfo);
+    public R<CaseInfo> updateById(String id, CaseInfo vo) {
+        CaseInfo caseInfo = getById(id);
+        System.out.println(caseInfo);
+        System.out.println(id);
+        System.out.println(vo);
+        BeanUtil.copyProperties(vo, caseInfo, "id");
+        updateById(caseInfo);
         return R.OK(vo);
     }
 
@@ -97,7 +78,7 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         if (CollectionUtil.isEmpty(ids)) {
             return R.NG("参数为空");
         }
-        List<GeneralInfo> generalInfos = this.listByIds(ids);
+        List<CaseInfo> generalInfos = this.listByIds(ids);
         if (CollectionUtil.isEmpty(generalInfos)) {
             return R.NG("信息不存在");
         }
