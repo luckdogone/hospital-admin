@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.admin.modules.sys.core.mapper.SurgicalInfoMapper">
+    <sql id="Base_surgical">
+        t.id,
+        t.patient_id,
+        t.surgery_time,
+        t.is_total_partial,
+        t.is_breast_conserve,
+        t.is_nipple_spare,
+        t.is_endoscopic,
+        t.is_reconstruction,
+        t.recon_method,
+        t.tumor_size_cm,
+        t.has_lymph_invasion,
+        t.has_nerve_invasion,
+        t.postop_path_grade,
+        t.is_multifocal,
+        t.tumor_location,
+        t.has_sln_biopsy,
+        t.use_ns,
+        t.pre_tad,
+        t.sln_count,
+        t.sln_meta,
+        t.sln_meta_count,
+        t.sln_micro_meta_count,
+        t.sln_itc_count,
+        t.ald,
+        t.ald_stage,
+        t.ald_count,
+        t.ald_meta_count,
+        t.ald_micro_meta_count,
+        t.ald_itc_count,
+        t.apex_meta,
+        t.im_meta,
+        t.ihc_result,
+        t.er_pct,
+        t.pr_pct,
+        t.her2,
+        t.ki67_pct,
+        t.ar_pct,
+        t.fish_test,
+        t.tnm,
+        t.stage,
+        t.subtype,
+        t.mp_level,
+        t.input_status,
+        t.created_by,
+        t.created,
+        t.modified_by,
+        t.modified,
+        t.is_enable,
+        t.is_del
+    </sql>
+    <select id="queryPage" resultType="com.spring.admin.modules.sys.core.model.entity.SurgicalInfo">
+    SELECT
+    <include refid="Base_surgical"/>
+    from surgical_info t
+    WHERE 1=1
+    <if test="query.patientId != null and query.patientId != ''">
+        and  t.patient_id = #{query.patientId}
+    </if>
+    <if test="query.inputStatus != null and query.inputStatus != ''">
+        and t.input_status = #{query.inputStatus}
+    </if>
+    <if test="query.isEnable != null">
+        and t.is_enable = #{query.isEnable}
+    </if>
+    <if test="query.isDel != null">
+        and t.is_del = #{query.isDel}
+    </if>
+    order by t.created desc
+    </select>
+
+    <select id="getIdsByPatientId" resultType="java.lang.String">
+        SELECT t.id
+        FROM surgical_info t
+        WHERE t.patient_id = #{patientId}
+        <if test="isDel != null">
+            AND t.is_del = #{isDel}
+        </if>
+    </select>
+</mapper>
