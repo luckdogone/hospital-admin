@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2024/8/17
  */
 @RestController
-@RequestMapping("/core/adjuvantInfo")
+@RequestMapping("/core/adjuvant")
 @Tag(name = "功能：辅助治疗")
 @RequiredArgsConstructor
 public class AdjuvantInfoController {

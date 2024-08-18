@@ -81,6 +81,9 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
      */
     public R<GeneralInfo> updateById(String id, GeneralInfo vo) {
         GeneralInfo generalInfo = getById(id);
+        System.out.println(generalInfo);
+        System.out.println(id);
+        System.out.println(vo);
         BeanUtil.copyProperties(vo, generalInfo, "id");
         updateById(generalInfo);
         return R.OK(vo);

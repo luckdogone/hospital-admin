@@ -1,5 +1,6 @@
 package com.spring.admin.modules.sys.core.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.spring.admin.data.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -56,60 +57,70 @@ public class NeoadjuvantInfo extends BaseEntity {
      * 1周期超声示肿物大小
      */
     @Schema(description = "1周期超声示肿物大小")
+    @TableField("week_1_size")
     private Double week1Size;
 
     /**
      * 2周期超声示肿物大小
      */
     @Schema(description = "2周期超声示肿物大小")
+    @TableField("week_2_size")
     private Double week2Size;
 
     /**
      * 3周期超声示肿物大小
      */
     @Schema(description = "3周期超声示肿物大小")
+    @TableField("week_3_size")
     private Double week3Size;
 
     /**
      * 4周期超声示肿物大小
      */
     @Schema(description = "4周期超声示肿物大小")
+    @TableField("week_4_size")
     private Double week4Size;
 
     /**
      * 5周期超声示肿物大小
      */
     @Schema(description = "5周期超声示肿物大小")
+    @TableField("week_5_size")
     private Double week5Size;
 
     /**
      * 6周期超声示肿物大小
      */
     @Schema(description = "6周期超声示肿物大小")
+    @TableField("week_6_size")
     private Double week6Size;
 
     /**
      * 2/3周期超声示肿物大小
      */
     @Schema(description = "2/3周期超声示肿物大小")
+    @TableField("week_2_3_size")
     private Double week23Size;
 
     /**
      * 4/5周期超声示肿物大小
      */
     @Schema(description = "4/5周期超声示肿物大小")
+    @TableField("week_4_5_size")
     private Double week45Size;
 
     /**
      * 6/7周期超声示肿物大小
      */
     @Schema(description = "6/7周期超声示肿物大小")
+    @TableField("week_6_7_size")
     private Double week67Size;
 
     /**
      * 8周期超声示肿物大小
      */
     @Schema(description = "8周期超声示肿物大小")
+    @TableField("week_8_size")
     private Double week8Size;
 
     /**
