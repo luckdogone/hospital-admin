@@ -8,11 +8,13 @@ import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.EndocrineInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.EndocrineInfo;
 import com.spring.admin.modules.sys.core.model.query.EndocrineInfoQuery;
+import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,6 +43,11 @@ public class EndocrineInfoService extends BaseServiceImpl<EndocrineInfoMapper, E
      * @return .
      */
     public R<EndocrineInfo> saveEndocrineInfo(EndocrineInfo endocrineInfo) {
+        endocrineInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        endocrineInfo.setCreated(LocalDateTime.now());
+        endocrineInfo.setInputStatus(0);
+        endocrineInfo.setIsEnable(1);
+        endocrineInfo.setIsDel(1);
         // set Id
         endocrineInfo.setId(IdUtil.fastSimpleUUID());
         // save
@@ -57,7 +64,7 @@ public class EndocrineInfoService extends BaseServiceImpl<EndocrineInfoMapper, E
      */
     public R<EndocrineInfo> updateById(String id, EndocrineInfo vo) {
         EndocrineInfo endocrineInfo = getById(id);
-        BeanUtil.copyProperties(vo, endocrineInfo, "id");
+        BeanUtil.copyProperties(vo, endocrineInfo, "id","inputStatus","isEnable","isDel");
         updateById(endocrineInfo);
         return R.OK(vo);
     }

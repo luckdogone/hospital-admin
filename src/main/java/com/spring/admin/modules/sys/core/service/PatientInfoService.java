@@ -8,9 +8,7 @@ import com.spring.admin.base.R;
 import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.data.domain.BasePage;
 import com.spring.admin.modules.sys.core.mapper.PatientInfoMapper;
-import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
-import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
-import com.spring.admin.modules.sys.core.model.entity.PatientInfo;
+import com.spring.admin.modules.sys.core.model.entity.*;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
 import com.spring.admin.security.util.SecurityUtil;
@@ -35,6 +33,11 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
 
     private final GeneralInfoService generalInfoService;
     private final CaseInfoService caseInfoService;
+    private final SurgicalInfoService surgicalInfoService;
+    private final AdjuvantInfoService adjuvantInfoService;;
+    private final RadiationInfoService radiationInfoService;
+    private final EndocrineInfoService endocrineInfoService;
+    private final NeoadjuvantInfoService neoadjuvantInfoService;
     /**
      * 获取基础信息分页
      *
@@ -57,25 +60,25 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
         return this.baseMapper.queryPage(null, query);
     }
 
-    private GeneralInfo addGeneralInfo() {
-        GeneralInfo generalInfo = new GeneralInfo();
-        generalInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        generalInfo.setCreated(LocalDateTime.now());
-        generalInfo.setInputStatus(0);
-        generalInfo.setIsEnable(1);
-        generalInfo.setIsDel(1);
-        return generalInfo;
-    }
-
-    private CaseInfo addCaseInfo() {
-        CaseInfo caseInfo = new CaseInfo();
-        caseInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        caseInfo.setCreated(LocalDateTime.now());
-        caseInfo.setInputStatus(0);
-        caseInfo.setIsEnable(1);
-        caseInfo.setIsDel(1);
-        return caseInfo;
-    }
+//    private GeneralInfo addGeneralInfo() {
+//        GeneralInfo generalInfo = new GeneralInfo();
+//        generalInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+//        generalInfo.setCreated(LocalDateTime.now());
+//        generalInfo.setInputStatus(0);
+//        generalInfo.setIsEnable(1);
+//        generalInfo.setIsDel(1);
+//        return generalInfo;
+//    }
+//
+//    private CaseInfo addCaseInfo() {
+//        CaseInfo caseInfo = new CaseInfo();
+//        caseInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+//        caseInfo.setCreated(LocalDateTime.now());
+//        caseInfo.setInputStatus(0);
+//        caseInfo.setIsEnable(1);
+//        caseInfo.setIsDel(1);
+//        return caseInfo;
+//    }
 
     /**
      * 保存信息
@@ -85,30 +88,109 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
      */
     @Transactional(rollbackFor = Exception.class)
     public R<PatientInfo> savePatientInfo(PatientInfo patientInfo) {
+        patientInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        patientInfo.setCreated(LocalDateTime.now());
+        patientInfo.setInputStatus(0);
+        patientInfo.setIsEnable(1);
+        patientInfo.setIsDel(1);
+        if (patientInfo == null) {
+            return R.NG("患者信息不能为空");
+        }
+
         try {
-            // Set Id
+            // 设置患者ID
             patientInfo.setId(IdUtil.fastSimpleUUID());
+
+            // 设置通用字段
+            setCommonFields(patientInfo);
+
             // 保存患者信息
-            save(patientInfo);
+            if (!save(patientInfo)) {
+                return R.NG("保存患者信息失败");
+            }
 
-            GeneralInfo generalInfo = addGeneralInfo();
-            CaseInfo caseInfo = addCaseInfo();
+            String patientId = patientInfo.getId();
 
-            // 在相关信息中设置患者ID
-            generalInfo.setPatientId(patientInfo.getId());
-            caseInfo.setPatientId(patientInfo.getId());
-
-            // 保存一般信息和病历信息
-            generalInfoService.saveGeneralInfo(generalInfo);
-            caseInfoService.saveCaseInfo(caseInfo);
+            // 创建并保存各模块信息
+            if (!createAndSaveModuleInfo(patientId)) {
+                throw new RuntimeException("保存模块信息失败");
+            }
 
             return R.OK(patientInfo);
-
         } catch (Exception e) {
-            // 记录异常并返回错误响应
             log.error("保存患者信息时出错： ", e);
-            return R.NG("新增患者失败，请重试");
+            throw new RuntimeException("新增患者失败，请重试", e);
         }
+    }
+
+    private void setCommonFields(Object entity) {
+        if (entity instanceof PatientInfo) {
+            PatientInfo info = (PatientInfo) entity;
+            info.setCreatedBy(SecurityUtil.getCurrentUsername());
+            info.setCreated(LocalDateTime.now());
+            info.setInputStatus(0);
+            info.setIsEnable(1);
+            info.setIsDel(1);
+        }
+    }
+
+    private boolean createAndSaveModuleInfo(String patientId) {
+        return createAndSaveGeneralInfo(patientId) &&
+                createAndSaveCaseInfo(patientId) &&
+                createAndSaveSurgicalInfo(patientId) &&
+                createAndSaveAdjuvantInfo(patientId) &&
+                createAndSaveRadiationInfo(patientId) &&
+                createAndSaveEndocrineInfo(patientId) &&
+                createAndSaveNeoadjuvantInfo(patientId);
+    }
+
+    private boolean createAndSaveGeneralInfo(String patientId) {
+        GeneralInfo generalInfo = new GeneralInfo();
+        setCommonFields(generalInfo);
+        generalInfo.setPatientId(patientId);
+        return generalInfoService.saveGeneralInfo(generalInfo) != null;
+    }
+
+    private boolean createAndSaveCaseInfo(String patientId) {
+        CaseInfo caseInfo = new CaseInfo();
+        setCommonFields(caseInfo);
+        caseInfo.setPatientId(patientId);
+        return caseInfoService.saveCaseInfo(caseInfo) != null;
+    }
+
+    private boolean createAndSaveSurgicalInfo(String patientId) {
+        SurgicalInfo surgicalInfo = new SurgicalInfo();
+        setCommonFields(surgicalInfo);
+        surgicalInfo.setPatientId(patientId);
+        return surgicalInfoService.saveSurgicalInfo(surgicalInfo) != null;
+    }
+
+    private boolean createAndSaveAdjuvantInfo(String patientId) {
+        AdjuvantInfo adjuvantInfo = new AdjuvantInfo();
+        setCommonFields(adjuvantInfo);
+        adjuvantInfo.setPatientId(patientId);
+        return adjuvantInfoService.saveAdjuvantInfo(adjuvantInfo) != null;
+    }
+
+    private boolean createAndSaveRadiationInfo(String patientId) {
+        RadiationInfo radiationInfo = new RadiationInfo();
+        setCommonFields(radiationInfo);
+        radiationInfo.setPatientId(patientId);
+        return radiationInfoService.saveRadiationInfo(radiationInfo) != null;
+    }
+
+    private boolean createAndSaveEndocrineInfo(String patientId) {
+        EndocrineInfo endocrineInfo = new EndocrineInfo();
+        setCommonFields(endocrineInfo);
+        endocrineInfo.setPatientId(patientId);
+        return endocrineInfoService.saveEndocrineInfo(endocrineInfo) != null;
+    }
+
+    private boolean createAndSaveNeoadjuvantInfo(String patientId) {
+        NeoadjuvantInfo neoadjuvantInfo = new NeoadjuvantInfo();
+        setCommonFields(neoadjuvantInfo);
+        neoadjuvantInfo.setPatientId(patientId);
+        return neoadjuvantInfoService.saveNeoadjuvantInfo(neoadjuvantInfo) != null;
     }
 
     /**
@@ -120,7 +202,7 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
      */
     public R<PatientInfo> updateById(String id, PatientInfo vo) {
         PatientInfo patientInfo = getById(id);
-        BeanUtil.copyProperties(vo, patientInfo, "id");
+        BeanUtil.copyProperties(vo, patientInfo, "id","inputStatus","isEnable","isDel");
         updateById(patientInfo);
         return R.OK(vo);
     }
@@ -136,29 +218,86 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
         if (CollectionUtil.isEmpty(ids)) {
             return R.NG("参数为空");
         }
-        List<PatientInfo> patientInfos = this.listByIds(ids);
-        if (CollectionUtil.isEmpty(patientInfos)) {
-            return R.NG("信息不存在");
-        }
-        this.removeByIds(ids);
 
-        // 初始化集合用于存储关联的 CaseInfo 和 GeneralInfo 的 id
-        List<String> caseIds = new ArrayList<>();
-        List<String> generalInfoIds = new ArrayList<>();
+        try {
+            List<PatientInfo> patientInfos = this.listByIds(ids);
+            if (CollectionUtil.isEmpty(patientInfos)) {
+                return R.NG("信息不存在");
+            }
 
-        // 使用一次循环获取关联的 CaseInfo 和 GeneralInfo 的 id
-        for (String id : ids) {
-            caseIds.addAll(caseInfoService.getIdsByPatientId(id, 1));
-            generalInfoIds.addAll(generalInfoService.getIdsByPatientId(id, 1));
-        }
+            // 删除患者信息
+            if (!this.removeByIds(ids)) {
+                throw new RuntimeException("删除患者信息失败");
+            }
 
-        // 执行批量删除操作
-        if (!generalInfoIds.isEmpty()) {
-            generalInfoService.batchDel(generalInfoIds);
+            // 删除所有相关模块的信息
+            deleteRelatedModuleInfo(ids);
+
+            return R.OK("批量删除成功");
+        } catch (Exception e) {
+            log.error("批量删除患者信息时出错： ", e);
+            throw new RuntimeException("批量删除失败，请重试", e);
         }
-        if (!caseIds.isEmpty()) {
-            caseInfoService.batchDel(caseIds);
+    }
+
+    private void deleteRelatedModuleInfo(List<String> patientIds) {
+        for (String patientId : patientIds) {
+            deleteGeneralInfo(patientId);
+            deleteCaseInfo(patientId);
+            deleteSurgicalInfo(patientId);
+            deleteAdjuvantInfo(patientId);
+            deleteRadiationInfo(patientId);
+            deleteEndocrineInfo(patientId);
+            deleteNeoadjuvantInfo(patientId);
         }
-        return R.OK();
+    }
+
+    private void deleteGeneralInfo(String patientId) {
+        List<String> ids = generalInfoService.getIdsByPatientId(patientId, 1);
+        if (!ids.isEmpty()) {
+            generalInfoService.batchDel(ids);
+        }
+    }
+
+    private void deleteCaseInfo(String patientId) {
+        List<String> ids = caseInfoService.getIdsByPatientId(patientId, 1);
+        if (!ids.isEmpty()) {
+            caseInfoService.batchDel(ids);
+        }
+    }
+
+    private void deleteSurgicalInfo(String patientId) {
+        List<String> ids = surgicalInfoService.getIdsByPatientId(patientId, 1);
+        if (!ids.isEmpty()) {
+            surgicalInfoService.batchDel(ids);
+        }
+    }
+
+    private void deleteAdjuvantInfo(String patientId) {
+        List<String> ids = adjuvantInfoService.getIdsByPatientId(patientId, 1);
+        if (!ids.isEmpty()) {
+            adjuvantInfoService.batchDel(ids);
+        }
+    }
+
+    private void deleteRadiationInfo(String patientId) {
+        List<String> ids = radiationInfoService.getIdsByPatientId(patientId, 1);
+        if (!ids.isEmpty()) {
+            radiationInfoService.batchDel(ids);
+        }
+    }
+
+    private void deleteEndocrineInfo(String patientId) {
+        List<String> ids = endocrineInfoService.getIdsByPatientId(patientId, 1);
+        if (!ids.isEmpty()) {
+            endocrineInfoService.batchDel(ids);
+        }
+    }
+
+    private void deleteNeoadjuvantInfo(String patientId) {
+        List<String> ids = neoadjuvantInfoService.getIdsByPatientId(patientId, 1);
+        if (!ids.isEmpty()) {
+            neoadjuvantInfoService.batchDel(ids);
+        }
     }
 }

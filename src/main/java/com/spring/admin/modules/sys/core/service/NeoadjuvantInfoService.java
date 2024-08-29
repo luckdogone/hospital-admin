@@ -9,11 +9,13 @@ import com.spring.admin.modules.sys.core.mapper.NeoadjuvantInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
 import com.spring.admin.modules.sys.core.model.entity.NeoadjuvantInfo;
 import com.spring.admin.modules.sys.core.model.query.NeoadjuvantInfoQuery;
+import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,6 +43,11 @@ public class NeoadjuvantInfoService extends BaseServiceImpl<NeoadjuvantInfoMappe
      * @return .
      */
     public R<NeoadjuvantInfo> saveNeoadjuvantInfo(NeoadjuvantInfo neoadjuvantInfo) {
+        neoadjuvantInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        neoadjuvantInfo.setCreated(LocalDateTime.now());
+        neoadjuvantInfo.setInputStatus(0);
+        neoadjuvantInfo.setIsEnable(1);
+        neoadjuvantInfo.setIsDel(1);
         // set Id
         neoadjuvantInfo.setId(IdUtil.fastSimpleUUID());
         // save
@@ -57,7 +64,7 @@ public class NeoadjuvantInfoService extends BaseServiceImpl<NeoadjuvantInfoMappe
      */
     public R<NeoadjuvantInfo> updateById(String id, NeoadjuvantInfo vo) {
         NeoadjuvantInfo neoadjuvantInfo = getById(id);
-        BeanUtil.copyProperties(vo, neoadjuvantInfo, "id");
+        BeanUtil.copyProperties(vo, neoadjuvantInfo, "id","inputStatus","isEnable","isDel");
         updateById(neoadjuvantInfo);
         return R.OK(vo);
     }

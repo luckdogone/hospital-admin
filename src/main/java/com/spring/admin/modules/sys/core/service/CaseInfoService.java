@@ -10,11 +10,13 @@ import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
 import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.query.CaseInfoQuery;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
+import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -43,6 +45,11 @@ public class CaseInfoService extends BaseServiceImpl<CaseInfoMapper, CaseInfo> {
      * @return .
      */
     public R<CaseInfo> saveCaseInfo(CaseInfo caseInfo) {
+        caseInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        caseInfo.setCreated(LocalDateTime.now());
+        caseInfo.setInputStatus(0);
+        caseInfo.setIsEnable(1);
+        caseInfo.setIsDel(1);
         // set Id
         caseInfo.setId(IdUtil.fastSimpleUUID());
         // save
@@ -60,9 +67,7 @@ public class CaseInfoService extends BaseServiceImpl<CaseInfoMapper, CaseInfo> {
     public R<CaseInfo> updateById(String id, CaseInfo vo) {
         CaseInfo caseInfo = getById(id);
         System.out.println(caseInfo);
-        System.out.println(id);
-        System.out.println(vo);
-        BeanUtil.copyProperties(vo, caseInfo, "id");
+        BeanUtil.copyProperties(vo, caseInfo, "id","inputStatus","isEnable","isDel");
         updateById(caseInfo);
         return R.OK(vo);
     }

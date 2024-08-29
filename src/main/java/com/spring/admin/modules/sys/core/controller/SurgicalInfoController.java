@@ -40,9 +40,6 @@ public class SurgicalInfoController {
     @Operation(summary = "保存信息")
 //    @PreAuthorize("hasAuthority('org:save')")
     public R<SurgicalInfo> save(HttpServletRequest request, @RequestBody SurgicalInfo vo) {
-        vo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        vo.setCreated(LocalDateTime.now());
-        vo.setIsDel(1);
         return surgicalInfoService.saveSurgicalInfo(vo);
     }
 

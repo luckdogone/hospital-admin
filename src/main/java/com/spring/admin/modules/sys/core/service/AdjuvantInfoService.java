@@ -8,11 +8,13 @@ import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.AdjuvantInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.AdjuvantInfo;
 import com.spring.admin.modules.sys.core.model.query.AdjuvantInfoQuery;
+import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,6 +43,11 @@ public class AdjuvantInfoService extends BaseServiceImpl<AdjuvantInfoMapper, Adj
      * @return .
      */
     public R<AdjuvantInfo> saveAdjuvantInfo(AdjuvantInfo adjuvantInfo) {
+        adjuvantInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        adjuvantInfo.setCreated(LocalDateTime.now());
+        adjuvantInfo.setInputStatus(0);
+        adjuvantInfo.setIsEnable(1);
+        adjuvantInfo.setIsDel(1);
         // set Id
         adjuvantInfo.setId(IdUtil.fastSimpleUUID());
         // save
@@ -57,7 +64,7 @@ public class AdjuvantInfoService extends BaseServiceImpl<AdjuvantInfoMapper, Adj
      */
     public R<AdjuvantInfo> updateById(String id, AdjuvantInfo vo) {
         AdjuvantInfo adjuvantInfo = getById(id);
-        BeanUtil.copyProperties(vo, adjuvantInfo, "id");
+        BeanUtil.copyProperties(vo, adjuvantInfo, "id","inputStatus","isEnable","isDel");
         updateById(adjuvantInfo);
         return R.OK(vo);
     }

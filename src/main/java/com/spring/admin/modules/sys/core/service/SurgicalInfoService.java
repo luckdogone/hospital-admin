@@ -10,11 +10,13 @@ import com.spring.admin.modules.sys.core.mapper.SurgicalInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
 import com.spring.admin.modules.sys.core.model.entity.SurgicalInfo;
 import com.spring.admin.modules.sys.core.model.query.SurgicalInfoQuery;
+import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,6 +44,11 @@ public class SurgicalInfoService extends BaseServiceImpl<SurgicalInfoMapper, Sur
      * @return .
      */
     public R<SurgicalInfo> saveSurgicalInfo(SurgicalInfo surgicalInfo) {
+        surgicalInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        surgicalInfo.setCreated(LocalDateTime.now());
+        surgicalInfo.setInputStatus(0);
+        surgicalInfo.setIsEnable(1);
+        surgicalInfo.setIsDel(1);
         // set Id
         surgicalInfo.setId(IdUtil.fastSimpleUUID());
         // save
@@ -61,7 +68,7 @@ public class SurgicalInfoService extends BaseServiceImpl<SurgicalInfoMapper, Sur
         System.out.println(surgicalInfo);
         System.out.println(id);
         System.out.println(vo);
-        BeanUtil.copyProperties(vo, surgicalInfo, "id");
+        BeanUtil.copyProperties(vo, surgicalInfo, "id","inputStatus","isEnable","isDel");
         updateById(surgicalInfo);
         return R.OK(vo);
     }

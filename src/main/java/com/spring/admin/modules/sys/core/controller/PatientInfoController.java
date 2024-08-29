@@ -50,11 +50,6 @@ public class PatientInfoController {
     @Operation(summary = "保存信息")
     @PreAuthorize("hasAuthority('patient:save')")
     public R<PatientInfo> save(HttpServletRequest request, @RequestBody PatientInfo vo) {
-        vo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        vo.setCreated(LocalDateTime.now());
-        vo.setInputStatus(0);
-        vo.setIsEnable(1);
-        vo.setIsDel(1);
         return patientInfoService.savePatientInfo(vo);
     }
 

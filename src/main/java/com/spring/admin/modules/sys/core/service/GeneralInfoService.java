@@ -12,6 +12,7 @@ import com.spring.admin.modules.sys.core.mapper.GeneralInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
 import com.spring.admin.modules.sys.system.model.entity.SysRole;
+import com.spring.admin.security.util.SecurityUtil;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -65,6 +67,11 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
      * @return .
      */
     public R<GeneralInfo> saveGeneralInfo(GeneralInfo generalInfo) {
+        generalInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        generalInfo.setCreated(LocalDateTime.now());
+        generalInfo.setInputStatus(0);
+        generalInfo.setIsEnable(1);
+        generalInfo.setIsDel(1);
         // set Id
         generalInfo.setId(IdUtil.fastSimpleUUID());
         // save
@@ -84,7 +91,8 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         System.out.println(generalInfo);
         System.out.println(id);
         System.out.println(vo);
-        BeanUtil.copyProperties(vo, generalInfo, "id");
+        BeanUtil.copyProperties(vo, generalInfo, "id","inputStatus","isEnable","isDel");
+        System.out.println(generalInfo);
         updateById(generalInfo);
         return R.OK(vo);
     }

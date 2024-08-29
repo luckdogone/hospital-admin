@@ -39,9 +39,6 @@ public class NeoadjuvantInfoController {
     @Operation(summary = "保存信息")
 //    @PreAuthorize("hasAuthority('org:save')")
     public R<NeoadjuvantInfo> save(HttpServletRequest request, @RequestBody NeoadjuvantInfo vo) {
-        vo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        vo.setCreated(LocalDateTime.now());
-        vo.setIsDel(1);
         return neoadjuvantInfoService.saveNeoadjuvantInfo(vo);
     }
 

@@ -41,9 +41,6 @@ public class CaseInfoController {
     @Operation(summary = "保存信息")
 //    @PreAuthorize("hasAuthority('org:save')")
     public R<CaseInfo> save(HttpServletRequest request, @RequestBody CaseInfo vo) {
-        vo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        vo.setCreated(LocalDateTime.now());
-        vo.setIsDel(1);
         return caseInfoService.saveCaseInfo(vo);
     }
 

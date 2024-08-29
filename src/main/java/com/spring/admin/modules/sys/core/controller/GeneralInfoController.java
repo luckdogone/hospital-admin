@@ -53,9 +53,6 @@ public class GeneralInfoController {
     @Operation(summary = "保存信息")
 //    @PreAuthorize("hasAuthority('org:save')")
     public R<GeneralInfo> save(HttpServletRequest request, @RequestBody GeneralInfo vo) {
-        vo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        vo.setCreated(LocalDateTime.now());
-        vo.setIsDel(1);
         return generalInfoService.saveGeneralInfo(vo);
     }
 

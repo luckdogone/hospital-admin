@@ -8,11 +8,13 @@ import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.RadiationInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.RadiationInfo;
 import com.spring.admin.modules.sys.core.model.query.RadiationInfoQuery;
+import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -40,6 +42,11 @@ public class RadiationInfoService extends BaseServiceImpl<RadiationInfoMapper, R
      * @return .
      */
     public R<RadiationInfo> saveRadiationInfo(RadiationInfo radiationInfo) {
+        radiationInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
+        radiationInfo.setCreated(LocalDateTime.now());
+        radiationInfo.setInputStatus(0);
+        radiationInfo.setIsEnable(1);
+        radiationInfo.setIsDel(1);
         // set Id
         radiationInfo.setId(IdUtil.fastSimpleUUID());
         // save
@@ -56,7 +63,7 @@ public class RadiationInfoService extends BaseServiceImpl<RadiationInfoMapper, R
      */
     public R<RadiationInfo> updateById(String id, RadiationInfo vo) {
         RadiationInfo radiationInfo = getById(id);
-        BeanUtil.copyProperties(vo, radiationInfo, "id");
+        BeanUtil.copyProperties(vo, radiationInfo, "id","inputStatus","isEnable","isDel");
         updateById(radiationInfo);
         return R.OK(vo);
     }
