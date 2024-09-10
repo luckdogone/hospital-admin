@@ -24,4 +24,6 @@ public interface GeneralInfoMapper extends BaseMapper<GeneralInfo> {
     List<GeneralInfo> queryPage(Page<GeneralInfo> page, @Param("query") GeneralInfoQuery query);
 
     List<String> getIdsByPatientId(String patientId, Integer isDel);
+
+    List<GeneralInfo> getInfoByPatientId(String patientId, Integer isDel);
 }

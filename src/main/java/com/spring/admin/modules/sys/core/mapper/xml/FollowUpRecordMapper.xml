@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.admin.modules.sys.core.mapper.FollowUpRecordMapper">
+    <sql id="BaseFollowFields">
+        t.id,
+        t.patient_id,
+        t.after_surgery_date,
+        t.follow_up_date,
+        t.follow_up_status,
+        t.ultrasound_abnormal,
+        t.ultrasound_abnormal_detail,
+        t.need_further_biopsy,
+        t.biopsy_result,
+        t.metastasis,
+        t.metastasis_location,
+        t.deceased,
+        t.cause_of_death,
+        t.arm_edema,
+        t.arm_edema_treatment,
+        t.chest_ct_abnormal,
+        t.head_mr_abnormal,
+        t.bone_scan_abnormal,
+        t.notes,
+        t.input_status,
+        t.created_by,
+        t.created,
+        t.modified_by,
+        t.modified,
+        t.is_enable,
+        t.is_del
+    </sql>
+
+    <sql id="PatientInfoFields">
+        t1.id,
+        t1.name,
+        t1.sex,
+        t1.age,
+        t1.address,
+        t1.phone,
+        t1.contact_phone,
+        t1.height,
+        t1.weight,
+        t1.input_status,
+        t1.created_by,
+        t1.created,
+        t1.modified_by,
+        t1.modified,
+        t1.is_enable,
+        t1.is_del
+    </sql>
+
+    <sql id="GeneralInfoFields">
+        t2.id,
+        t2.surgical_num,
+        t2.patient_id,
+        t2.case_no,
+        t2.input_status,
+        t2.created_by,
+        t2.created,
+        t2.modified_by,
+        t2.modified,
+        t2.is_enable,
+        t2.is_del
+    </sql>
+
+    <insert id="addFollowUpRecord" parameterType="com.spring.admin.modules.sys.core.model.entity.FollowUpRecord">
+        INSERT INTO follow_up_record (
+            id,
+            patient_id,
+            after_surgery_date,
+            follow_up_date,
+            follow_up_status,
+            ultrasound_abnormal,
+            ultrasound_abnormal_detail,
+            need_further_biopsy,
+            biopsy_result,
+            metastasis,
+            metastasis_location,
+            deceased,
+            cause_of_death,
+            arm_edema,
+            arm_edema_treatment,
+            chest_ct_abnormal,
+            head_mr_abnormal,
+            bone_scan_abnormal,
+            notes,
+            input_status,
+            created_by,
+            created,
+            modified_by,
+            modified,
+            is_enable,
+            is_del
+        ) VALUES (
+                     #{id},
+                     #{patientId},
+                     #{afterSurgeryDate},
+                     #{followUpDate},
+                     #{followUpStatus},
+                     #{ultrasoundAbnormal},
+                     #{ultrasoundAbnormalDetail},
+                     #{needFurtherBiopsy},
+                     #{biopsyResult},
+                     #{metastasis},
+                     #{metastasisLocation},
+                     #{deceased},
+                     #{causeOfDeath},
+                     #{armEdema},
+                     #{armEdemaTreatment},
+                     #{chestCtAbnormal},
+                     #{headMrAbnormal},
+                     #{boneScanAbnormal},
+                     #{notes},
+                     #{inputStatus},
+                     #{createdBy},
+                     #{created},
+                     #{modifiedBy},
+                     #{modified},
+                     #{isEnable},
+                     #{isDel}
+                 )
+    </insert>
+
+
+    <select id="queryPage" resultType="com.spring.admin.modules.sys.core.model.vo.PatientInfoVO">
+        SELECT
+        <include refid="PatientInfoFields"/>,
+        <include refid="GeneralInfoFields"/>
+        FROM patient_info t1
+        LEFT JOIN general_info t2 ON t1.id = t2.patient_id
+        WHERE 1 = 1
+        <if test="query.surgicalNum != null and query.surgicalNum != ''">
+            AND t2.surgical_num LIKE CONCAT('%', #{query.surgicalNum}, '%')
+        </if>
+        <if test="query.caseNo != null and query.caseNo != ''">
+            AND t2.case_no LIKE CONCAT('%', #{query.caseNo}, '%')
+        </if>
+        <if test="query.name != null and query.name != ''">
+            AND t1.name LIKE CONCAT('%', #{query.name}, '%')
+        </if>
+        <if test="query.phone != null and query.phone != ''">
+            AND (t1.phone LIKE CONCAT('%', #{query.phone}, '%') OR t1.contact_phone LIKE CONCAT('%', #{query.phone}, '%'))
+        </if>
+        ORDER BY t1.created DESC
+    </select>
+
+    <select id="queryByPatientId" resultType="com.spring.admin.modules.sys.core.model.entity.FollowUpRecord">
+        SELECT
+        <include refid="BaseFollowFields"/>
+        FROM follow_up_record t
+        WHERE t.patient_id = #{patientId}
+        ORDER BY t.created DESC
+    </select>
+
+    <select id="queryPendingVisitRecords" resultType="com.spring.admin.modules.sys.core.model.vo.FollowUpRecordVO">
+        SELECT
+        <include refid="BaseFollowFields"/>,
+        <include refid="PatientInfoFields"/>,
+        <include refid="GeneralInfoFields"/>
+        FROM follow_up_record t
+        LEFT JOIN patient_info t1 ON t.patient_id = t1.id
+        LEFT JOIN general_info t2 ON t1.id = t2.patient_id
+        WHERE t.follow_up_status = '待随访'
+        <if test="query.name != null and query.name != ''">
+            AND t1.name LIKE CONCAT('%', #{query.name}, '%')
+        </if>
+        <if test="query.surgicalNum != null and query.surgicalNum != ''">
+            AND t2.surgical_num LIKE CONCAT('%', #{query.surgicalNum}, '%')
+        </if>
+        <if test="query.caseNo != null and query.caseNo != ''">
+            AND t2.case_no LIKE CONCAT('%', #{query.caseNo}, '%')
+        </if>
+        ORDER BY t.follow_up_date DESC
+    </select>
+</mapper>
