@@ -193,7 +193,9 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
             updateById(followUpRecord);
 
             // 计算下次随访日期并生成新的随访记录
-            Date nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()), followUpRecordVO);
+//            Date nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()), followUpRecordVO);
+
+            Date nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), followUpRecordVO.getFollowUpDate(), followUpRecordVO);
 
             Calendar cal = Calendar.getInstance();
             cal.setTime(nextFollowUpDate);

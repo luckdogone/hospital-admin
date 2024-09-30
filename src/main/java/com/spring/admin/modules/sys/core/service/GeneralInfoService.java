@@ -171,10 +171,10 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         // 创建新的 FollowUpRecord 对象
         FollowUpRecord followUpRecord = new FollowUpRecord();
 
-        Date nowTime = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//        Date nowTime = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         // 计算下次随访日期并生成新的随访记录
-        Date nextFollowUpDate = calculateNextFollowUpDate(surgeryDate, nowTime, followUpRecord);
+        Date nextFollowUpDate = calculateNextFollowUpDate(surgeryDate, surgeryDate, followUpRecord);
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(nextFollowUpDate);

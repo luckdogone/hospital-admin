@@ -61,11 +61,20 @@ public class FollowUpRecord extends BaseEntity {
     @Schema(description = "X月复查胸部CT是否异常")
     private Integer chestCtAbnormal;
 
+    @Schema(description = "X月复查胸部CT异常结果")
+    private String chestCtAbnormalResult;
+
     @Schema(description = "X月复查头颅MR是否异常")
     private Integer headMrAbnormal;
 
+    @Schema(description = "X月复查头颅MR异常结果")
+    private String headMrAbnormalResult;
+
     @Schema(description = "X月复查全身骨显像是否异常")
     private Integer boneScanAbnormal;
+
+    @Schema(description = "X月复查全身骨显像异常结果")
+    private String boneScanAbnormalResult;
 
     @Schema(description = "备注")
     private String notes;

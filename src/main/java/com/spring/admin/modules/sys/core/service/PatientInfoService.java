@@ -11,6 +11,7 @@ import com.spring.admin.modules.sys.core.mapper.PatientInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.*;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
+import com.spring.admin.modules.sys.core.model.vo.SearchQueryDTO;
 import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,16 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
     private final RadiationInfoService radiationInfoService;
     private final EndocrineInfoService endocrineInfoService;
     private final NeoadjuvantInfoService neoadjuvantInfoService;
+
+    public BasePage<PatientInfo> searchQueryPage(SearchQueryDTO searchQuery) {
+        Page<PatientInfo> page = new Page<>(searchQuery.getCurrent(), searchQuery.getSize());
+        System.out.println(searchQuery.getCurrent());
+        System.out.println(searchQuery.getSize());
+        List<PatientInfo> records = this.baseMapper.searchQueryPage(page, searchQuery);
+        System.out.println(records);
+        return new BasePage<>(page.getCurrent(), page.getSize(), page.getTotal(), records);
+    }
+
     /**
      * 获取基础信息分页
      *

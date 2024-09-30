@@ -3,8 +3,9 @@ package com.spring.admin.modules.sys.core.controller;
 
 import com.spring.admin.base.R;
 import com.spring.admin.data.domain.BasePage;
-import com.spring.admin.modules.sys.core.model.entity.PatientInfo;
+import com.spring.admin.modules.sys.core.model.entity.*;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
+import com.spring.admin.modules.sys.core.model.vo.SearchQueryDTO;
 import com.spring.admin.modules.sys.core.service.PatientInfoService;
 import com.spring.admin.security.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PatientInfoController {
     private final PatientInfoService patientInfoService;
+
+    @PostMapping("/query/search")
+    public R<BasePage<PatientInfo>> searchQueryPage(@RequestBody SearchQueryDTO searchQuery) {
+        System.out.println(searchQuery);
+        BasePage<PatientInfo> page = patientInfoService.searchQueryPage(searchQuery);
+        return R.OK(page);
+        // 这里 searchQuery 是包含 PatientInfo、GeneralInfo 等信息的对象
+//        PatientInfo patientInfo = searchQuery.getPatientInfo();
+//        GeneralInfo generalInfo = searchQuery.getGeneralInfo();
+//        CaseInfo caseInfo = searchQuery.getCaseInfo();
+//        SurgicalInfo surgicalInfo = searchQuery.getSurgicalInfo();
+//        AdjuvantInfo adjuvantInfo = searchQuery.getAdjuvantInfo();
+//        EndocrineInfo endocrineInfo = searchQuery.getEndocrineInfo();
+//        NeoadjuvantInfo neoadjuvantInfo = searchQuery.getNeoadjuvantInfo();
+//        RadiationInfo radiationInfo = searchQuery.getRadiationInfo();
+//        return R.OK("success");
+    }
+
+    @GetMapping("/query/excel")
+    @Operation(summary = "列表")
+//    @PreAuthorize("hasAuthority('patient:query:list')")
+    public R<List<PatientInfo>> getExcelList(HttpServletRequest request, @ParameterObject PatientInfoQuery query) {
+        List<PatientInfo> res = patientInfoService.queryList(query);
+        return R.OK(res);
+    }
+
 
     @GetMapping("/query/page")
     @Operation(summary = "分页查询")

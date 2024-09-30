@@ -96,25 +96,11 @@ public class NeoadjuvantInfo extends BaseEntity {
     private Double week6Size;
 
     /**
-     * 2/3周期超声示肿物大小
+     * 8周期超声示肿物大小
      */
-    @Schema(description = "2/3周期超声示肿物大小")
-    @TableField("week_2_3_size")
-    private Double week23Size;
-
-    /**
-     * 4/5周期超声示肿物大小
-     */
-    @Schema(description = "4/5周期超声示肿物大小")
-    @TableField("week_4_5_size")
-    private Double week45Size;
-
-    /**
-     * 6/7周期超声示肿物大小
-     */
-    @Schema(description = "6/7周期超声示肿物大小")
-    @TableField("week_6_7_size")
-    private Double week67Size;
+    @Schema(description = "7周期超声示肿物大小")
+    @TableField("week_7_size")
+    private Double week7Size;
 
     /**
      * 8周期超声示肿物大小
@@ -122,6 +108,27 @@ public class NeoadjuvantInfo extends BaseEntity {
     @Schema(description = "8周期超声示肿物大小")
     @TableField("week_8_size")
     private Double week8Size;
+
+    /**
+     * 2/3周期核磁示肿物大小
+     */
+    @Schema(description = "2/3周期核磁示肿物大小")
+    @TableField("week_2_3_size")
+    private Double week23Size;
+
+    /**
+     * 4/5周期核磁示肿物大小
+     */
+    @Schema(description = "4/5周期核磁示肿物大小")
+    @TableField("week_4_5_size")
+    private Double week45Size;
+
+    /**
+     * 6/7周期核磁示肿物大小
+     */
+    @Schema(description = "6/7周期核磁示肿物大小")
+    @TableField("week_6_7_size")
+    private Double week67Size;
 
     /**
      * 是否有新辅助药物剂量调整

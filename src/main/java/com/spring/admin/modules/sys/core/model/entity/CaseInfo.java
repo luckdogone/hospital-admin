@@ -18,37 +18,64 @@ public class CaseInfo extends BaseEntity {
     private Integer ultrasoundStatus;
 
     @Schema(description = "超声大小，单位cm")
-    private Float ultrasoundSize;
+    private String ultrasoundLeftSize;
 
     @Schema(description = "是否有血流信号")
-    private Integer ultrasoundBloodFlow;
+    private Integer ultrasoundLeftBloodFlow;
 
     @Schema(description = "BIRADS分类（超声）")
-    private Integer ultrasoundBirads;
+    private String ultrasoundLeftBirads;
+
+    @Schema(description = "超声大小，单位cm")
+    private String ultrasoundRightSize;
+
+    @Schema(description = "是否有血流信号")
+    private Integer ultrasoundRightBloodFlow;
+
+    @Schema(description = "BIRADS分类（超声）")
+    private String ultrasoundRightBirads;
 
     @Schema(description = "入院钼靶状态（0: 未做, 1: 左, 2: 右, 3: 双侧）")
     private Integer mammographyStatus;
 
     @Schema(description = "钼靶大小，单位cm")
-    private Float mammographySize;
+    private String mammographyLeftSize;
 
     @Schema(description = "是否有细小钙化影")
-    private Integer mammographyAggregation;
+    private Integer mammographyLeftAggregation;
 
     @Schema(description = "BIRADS分类（钼靶）")
-    private Integer mammographyBirads;
+    private String mammographyLeftBirads;
+
+    @Schema(description = "钼靶大小，单位cm")
+    private String mammographyRightSize;
+
+    @Schema(description = "是否有细小钙化影")
+    private Integer mammographyRightAggregation;
+
+    @Schema(description = "BIRADS分类（钼靶）")
+    private String mammographyRightBirads;
 
     @Schema(description = "入院乳腺核磁状态（0: 未做, 1: 左, 2: 右, 3: 双侧）")
     private Integer mriStatus;
 
     @Schema(description = "乳腺大小，单位cm")
-    private Float mriSize;
+    private String mriLeftSize;
 
     @Schema(description = "是否有增强信号")
-    private Integer mriBloodFlow;
+    private Integer mriLeftBloodFlow;
 
     @Schema(description = "BIRADS分类（乳腺核磁）")
-    private Integer mriBirads;
+    private String mriLeftBirads;
+
+    @Schema(description = "乳腺大小，单位cm")
+    private String mriRightSize;
+
+    @Schema(description = "是否有增强信号")
+    private Integer mriRightBloodFlow;
+
+    @Schema(description = "BIRADS分类（乳腺核磁）")
+    private String mriRightBirads;
 
     @Schema(description = "白细胞计数")
     private Float wbc;
