@@ -64,7 +64,15 @@ public class RadiationInfoService extends BaseServiceImpl<RadiationInfoMapper, R
     public R<RadiationInfo> updateById(String id, RadiationInfo vo) {
         RadiationInfo radiationInfo = getById(id);
         BeanUtil.copyProperties(vo, radiationInfo, "id","inputStatus","isEnable","isDel");
+        radiationInfo.setInputStatus(2);
         updateById(radiationInfo);
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (allStatusesAreTwo) {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
+        } else {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 1);
+        }
         return R.OK(vo);
     }
 

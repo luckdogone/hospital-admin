@@ -69,7 +69,16 @@ public class SurgicalInfoService extends BaseServiceImpl<SurgicalInfoMapper, Sur
         System.out.println(id);
         System.out.println(vo);
         BeanUtil.copyProperties(vo, surgicalInfo, "id","inputStatus","isEnable","isDel");
+        surgicalInfo.setInputStatus(2);
         updateById(surgicalInfo);
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
+        System.out.println(allInputStatus);
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (allStatusesAreTwo) {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
+        } else {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 1);
+        }
         return R.OK(vo);
     }
 

@@ -401,6 +401,9 @@
             <if test="searchQuery.surgicalInfo.surgeryTime != null">
                 AND s.surgery_time = #{searchQuery.surgicalInfo.surgeryTime}
             </if>
+            <if test="searchQuery.surgicalInfo.surgicalSite != null and searchQuery.surgicalInfo.surgicalSite != ''">
+                AND s.surgical_site = #{searchQuery.surgicalInfo.surgicalSite}
+            </if>
             <if test="searchQuery.surgicalInfo.isTotalPartial != null">
                 AND s.is_total_partial = #{searchQuery.surgicalInfo.isTotalPartial}
             </if>
@@ -622,4 +625,30 @@
 
         ORDER BY t.created DESC
     </select>
+
+    <select id="getRelatedInputStatus" resultType="java.lang.Integer">
+        SELECT
+            g.input_status AS general_info_status,
+            c.input_status AS case_info_status,
+            s.input_status AS surgical_info_status,
+            n.input_status AS neoadjuvant_info_status,
+            a.input_status AS adjuvant_info_status,
+            e.input_status AS endocrine_info_status,
+            r.input_status AS radiation_info_status
+        FROM patient_info p
+                 LEFT JOIN general_info g ON p.id = g.patient_id
+                 LEFT JOIN case_info c ON p.id = c.patient_id
+                 LEFT JOIN surgical_info s ON p.id = s.patient_id
+                 LEFT JOIN neoadjuvant_info n ON p.id = n.patient_id
+                 LEFT JOIN adjuvant_info a ON p.id = a.patient_id
+                 LEFT JOIN endocrine_info e ON p.id = e.patient_id
+                 LEFT JOIN radiation_info r ON p.id = r.patient_id
+        WHERE p.id = #{patientId}
+    </select>
+
+    <update id="updatePatientInputStatus">
+        UPDATE patient_info
+        SET input_status = #{inputStatus}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -68,7 +68,15 @@ public class CaseInfoService extends BaseServiceImpl<CaseInfoMapper, CaseInfo> {
         CaseInfo caseInfo = getById(id);
         System.out.println(caseInfo);
         BeanUtil.copyProperties(vo, caseInfo, "id","inputStatus","isEnable","isDel");
+        caseInfo.setInputStatus(2);
         updateById(caseInfo);
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (allStatusesAreTwo) {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
+        } else {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 1);
+        }
         return R.OK(vo);
     }
 

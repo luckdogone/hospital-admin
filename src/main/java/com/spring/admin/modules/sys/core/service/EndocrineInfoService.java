@@ -65,7 +65,15 @@ public class EndocrineInfoService extends BaseServiceImpl<EndocrineInfoMapper, E
     public R<EndocrineInfo> updateById(String id, EndocrineInfo vo) {
         EndocrineInfo endocrineInfo = getById(id);
         BeanUtil.copyProperties(vo, endocrineInfo, "id","inputStatus","isEnable","isDel");
+        endocrineInfo.setInputStatus(2);
         updateById(endocrineInfo);
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (allStatusesAreTwo) {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
+        } else {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 1);
+        }
         return R.OK(vo);
     }
 

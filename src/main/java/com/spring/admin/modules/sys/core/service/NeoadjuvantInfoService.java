@@ -65,7 +65,15 @@ public class NeoadjuvantInfoService extends BaseServiceImpl<NeoadjuvantInfoMappe
     public R<NeoadjuvantInfo> updateById(String id, NeoadjuvantInfo vo) {
         NeoadjuvantInfo neoadjuvantInfo = getById(id);
         BeanUtil.copyProperties(vo, neoadjuvantInfo, "id","inputStatus","isEnable","isDel");
+        neoadjuvantInfo.setInputStatus(2);
         updateById(neoadjuvantInfo);
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (allStatusesAreTwo) {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
+        } else {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 1);
+        }
         return R.OK(vo);
     }
 

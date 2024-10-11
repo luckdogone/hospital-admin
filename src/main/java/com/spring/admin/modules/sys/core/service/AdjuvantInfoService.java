@@ -65,7 +65,15 @@ public class AdjuvantInfoService extends BaseServiceImpl<AdjuvantInfoMapper, Adj
     public R<AdjuvantInfo> updateById(String id, AdjuvantInfo vo) {
         AdjuvantInfo adjuvantInfo = getById(id);
         BeanUtil.copyProperties(vo, adjuvantInfo, "id","inputStatus","isEnable","isDel");
+        adjuvantInfo.setInputStatus(2);
         updateById(adjuvantInfo);
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (allStatusesAreTwo) {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
+        } else {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 1);
+        }
         return R.OK(vo);
     }
 

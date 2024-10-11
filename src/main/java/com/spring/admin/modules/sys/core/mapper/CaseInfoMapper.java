@@ -25,4 +25,21 @@ public interface CaseInfoMapper extends BaseMapper<CaseInfo> {
     List<CaseInfo> queryPage(Page<CaseInfo> page, @Param("query") CaseInfoQuery query);
 
     List<String> getIdsByPatientId(String patientId, Integer isDel);
+
+    /**
+     * 获取相关表的input_status
+     *
+     * @param patientId 患者ID
+     * @return 包含各相关表input_status的Map
+     */
+    List<Integer> getRelatedInputStatus(@Param("patientId") String patientId);
+
+    /**
+     * 更新患者信息的input_status
+     *
+     * @param id 患者ID
+     * @param inputStatus 新的input_status值
+     * @return 更新的记录数
+     */
+    int updatePatientInputStatus(@Param("id") String id, @Param("inputStatus") Integer inputStatus);
 }

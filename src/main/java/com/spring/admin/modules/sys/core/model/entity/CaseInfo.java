@@ -18,7 +18,7 @@ public class CaseInfo extends BaseEntity {
     private Integer ultrasoundStatus;
 
     @Schema(description = "超声大小，单位cm")
-    private String ultrasoundLeftSize;
+    private Double ultrasoundLeftSize;
 
     @Schema(description = "是否有血流信号")
     private Integer ultrasoundLeftBloodFlow;
@@ -27,7 +27,7 @@ public class CaseInfo extends BaseEntity {
     private String ultrasoundLeftBirads;
 
     @Schema(description = "超声大小，单位cm")
-    private String ultrasoundRightSize;
+    private Double ultrasoundRightSize;
 
     @Schema(description = "是否有血流信号")
     private Integer ultrasoundRightBloodFlow;
@@ -39,7 +39,7 @@ public class CaseInfo extends BaseEntity {
     private Integer mammographyStatus;
 
     @Schema(description = "钼靶大小，单位cm")
-    private String mammographyLeftSize;
+    private Double mammographyLeftSize;
 
     @Schema(description = "是否有细小钙化影")
     private Integer mammographyLeftAggregation;
@@ -48,7 +48,7 @@ public class CaseInfo extends BaseEntity {
     private String mammographyLeftBirads;
 
     @Schema(description = "钼靶大小，单位cm")
-    private String mammographyRightSize;
+    private Double mammographyRightSize;
 
     @Schema(description = "是否有细小钙化影")
     private Integer mammographyRightAggregation;
@@ -60,7 +60,7 @@ public class CaseInfo extends BaseEntity {
     private Integer mriStatus;
 
     @Schema(description = "乳腺大小，单位cm")
-    private String mriLeftSize;
+    private Double mriLeftSize;
 
     @Schema(description = "是否有增强信号")
     private Integer mriLeftBloodFlow;
@@ -69,7 +69,7 @@ public class CaseInfo extends BaseEntity {
     private String mriLeftBirads;
 
     @Schema(description = "乳腺大小，单位cm")
-    private String mriRightSize;
+    private Double mriRightSize;
 
     @Schema(description = "是否有增强信号")
     private Integer mriRightBloodFlow;

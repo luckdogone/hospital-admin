@@ -30,6 +30,12 @@ public class SurgicalInfo extends BaseEntity {
     @Schema(description = "手术时间")
     private Date surgeryTime;
 
+    /**
+     * 手术部位
+     */
+    @Schema(description = "手术部位")
+    private String surgicalSite;
+
     // 乳腺相关字段
     @Schema(description = "是否全切/保乳")
     private Integer isTotalPartial;
@@ -151,7 +157,7 @@ public class SurgicalInfo extends BaseEntity {
 
     // MP级别/级
     @Schema(description = "MP级别: 无浸润(MP0)/微浸润(MP1)/中度浸润(MP2)/重度浸润(MP3)/完全浸润(MP4)")
-    private String mpLevel;
+    private Integer mpLevel;
 
     // 入录信息
     /**

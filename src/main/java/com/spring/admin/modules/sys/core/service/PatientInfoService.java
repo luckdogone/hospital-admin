@@ -101,7 +101,7 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
     public R<PatientInfo> savePatientInfo(PatientInfo patientInfo) {
         patientInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
         patientInfo.setCreated(LocalDateTime.now());
-        patientInfo.setInputStatus(0);
+        patientInfo.setInputStatus(1);
         patientInfo.setIsEnable(1);
         patientInfo.setIsDel(1);
         if (patientInfo == null) {
@@ -214,6 +214,13 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
     public R<PatientInfo> updateById(String id, PatientInfo vo) {
         PatientInfo patientInfo = getById(id);
         BeanUtil.copyProperties(vo, patientInfo, "id","inputStatus","isEnable","isDel");
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(id);
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (allStatusesAreTwo) {
+            patientInfo.setInputStatus(2);
+        } else {
+            patientInfo.setInputStatus(1);
+        }
         updateById(patientInfo);
         return R.OK(vo);
     }

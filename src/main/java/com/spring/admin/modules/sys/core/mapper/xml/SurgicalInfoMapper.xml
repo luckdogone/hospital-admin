@@ -6,6 +6,7 @@
         t.id,
         t.patient_id,
         t.surgery_time,
+        t.surgical_site,
         t.is_total_partial,
         t.is_breast_conserve,
         t.is_nipple_spare,
@@ -81,4 +82,59 @@
             AND t.is_del = #{isDel}
         </if>
     </select>
+
+    <select id="getRelatedInputStatus" resultType="java.lang.Integer">
+        SELECT g.input_status
+        FROM patient_info p
+                 LEFT JOIN general_info g ON p.id = g.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT c.input_status
+        FROM patient_info p
+                 LEFT JOIN case_info c ON p.id = c.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT s.input_status
+        FROM patient_info p
+                 LEFT JOIN surgical_info s ON p.id = s.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT n.input_status
+        FROM patient_info p
+                 LEFT JOIN neoadjuvant_info n ON p.id = n.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT a.input_status
+        FROM patient_info p
+                 LEFT JOIN adjuvant_info a ON p.id = a.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT e.input_status
+        FROM patient_info p
+                 LEFT JOIN endocrine_info e ON p.id = e.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT r.input_status
+        FROM patient_info p
+                 LEFT JOIN radiation_info r ON p.id = r.patient_id
+        WHERE p.id = #{patientId}
+    </select>
+
+    <update id="updatePatientInputStatus">
+        UPDATE patient_info
+        SET input_status = #{inputStatus}
+        WHERE id = #{id}
+    </update>
 </mapper>

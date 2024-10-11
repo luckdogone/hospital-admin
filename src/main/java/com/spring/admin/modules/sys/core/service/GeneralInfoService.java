@@ -100,7 +100,6 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         }
     }
 
-
     /**
      * 保存信息
      *
@@ -137,13 +136,9 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
     public R<GeneralInfo> updateById(String id, GeneralInfo vo) {
         // 根据 id 获取 GeneralInfo
         GeneralInfo generalInfo = getById(id);
-        System.out.println(generalInfo);
-        System.out.println(id);
-        System.out.println(vo);
 
         // 将 vo 中的属性复制到 generalInfo 对象中，排除部分字段
         BeanUtil.copyProperties(vo, generalInfo, "id", "inputStatus", "isEnable", "isDel");
-        System.out.println(generalInfo);
 
         // 获取手术编号
         String surgicalNum = generalInfo.getSurgicalNum();
@@ -158,20 +153,8 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
             return R.NG("保存失败，手术日期编号格式不正确");
         }
 
-        System.out.println(surgeryDate);
-
-        // 使用 Calendar 在手术日期上加三个月
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.setTime(surgeryDate);
-//        calendar.add(Calendar.MONTH, 3);  // 在手术日期上加三个月
-//        Date followUpDate = calendar.getTime();
-
-//        System.out.println(followUpDate);
-
         // 创建新的 FollowUpRecord 对象
         FollowUpRecord followUpRecord = new FollowUpRecord();
-
-//        Date nowTime = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         // 计算下次随访日期并生成新的随访记录
         Date nextFollowUpDate = calculateNextFollowUpDate(surgeryDate, surgeryDate, followUpRecord);
@@ -189,13 +172,14 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         followUpRecord.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
         followUpRecord.setCreatedBy(SecurityUtil.getCurrentUsername());
         followUpRecord.setCreated(LocalDateTime.now());
-        followUpRecord.setInputStatus(0);
+        followUpRecord.setInputStatus(2);
         followUpRecord.setIsEnable(1);
         followUpRecord.setIsDel(1);
 
         // 尝试保存 FollowUpRecord 对象
         try {
             followUpRecordMapper.addFollowUpRecord(followUpRecord);  // 调用保存函数
+            generalInfo.setInputStatus(2);
         } catch (Exception e) {
             // 如果存储失败，回滚事务并返回错误
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();  // 回滚事务
@@ -204,6 +188,16 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
 
         // 更新 GeneralInfo 对象
         updateById(generalInfo);
+
+        List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
+        System.out.println(allInputStatus);
+        boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
+        if (!allInputStatus.isEmpty() && allStatusesAreTwo) {
+            System.out.println(666666);
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
+        } else {
+            this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 1);
+        }
 
         // 返回成功响应
         return R.OK(vo);
