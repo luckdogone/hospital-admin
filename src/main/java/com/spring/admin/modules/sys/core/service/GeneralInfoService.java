@@ -30,6 +30,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -82,7 +85,7 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
      * @return 解析出的手术日期
      * @throws IllegalArgumentException 如果手术编号格式不正确
      */
-    public Date parseSurgicalNumForDate(String surgicalNum) {
+    public LocalDate parseSurgicalNumForDate(String surgicalNum) {
         // 验证手术编号长度
         if (surgicalNum == null || surgicalNum.length() < 9) {
             throw new IllegalArgumentException("手术编号格式不正确");
@@ -93,9 +96,9 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
 
         try {
             // 将日期部分转换为 Date 对象
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-            return dateFormat.parse(datePart);
-        } catch (ParseException e) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            return LocalDate.parse(datePart, formatter);
+        } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("手术编号中的日期格式不正确", e);
         }
     }
@@ -144,7 +147,7 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         String surgicalNum = generalInfo.getSurgicalNum();
 
         // 解析手术日期
-        Date surgeryDate;
+        LocalDate surgeryDate;
         try {
             surgeryDate = parseSurgicalNumForDate(surgicalNum);  // 使用解析函数获取手术日期
         } catch (IllegalArgumentException e) {
@@ -157,14 +160,10 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         FollowUpRecord followUpRecord = new FollowUpRecord();
 
         // 计算下次随访日期并生成新的随访记录
-        Date nextFollowUpDate = calculateNextFollowUpDate(surgeryDate, surgeryDate, followUpRecord);
+        LocalDate nextFollowUpDate = calculateNextFollowUpDate(surgeryDate, surgeryDate, followUpRecord);
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(nextFollowUpDate);
-
-        // 根据手术日期和当前随访日期计算时间间隔
-        long diffInMillies = Math.abs(nextFollowUpDate.getTime() - surgeryDate.getTime());
-        long diffInMonths = diffInMillies / (30L * 24 * 60 * 60 * 1000);
+        // 计算手术日期和下次随访日期的月份差异
+        long diffInMonths = ChronoUnit.MONTHS.between(surgeryDate, nextFollowUpDate);
 
         followUpRecord.setPatientId(generalInfo.getPatientId());  // 假设 generalInfo 中有 patientId
         followUpRecord.setFollowUpDate(nextFollowUpDate);  // 设置随访日期
@@ -210,16 +209,12 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
      * @param currentDate   当前随访日期
      * @return 下次随访日期
      */
-    private Date calculateNextFollowUpDate(Date surgeryDate, Date currentDate, FollowUpRecord followUpRecordvo) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(currentDate);
-
-        // 根据手术日期和当前随访日期计算时间间隔
-        long diffInMillies = Math.abs(currentDate.getTime() - surgeryDate.getTime());
-        long diffInMonths = diffInMillies / (30L * 24 * 60 * 60 * 1000);
+    private LocalDate calculateNextFollowUpDate(LocalDate surgeryDate, LocalDate currentDate, FollowUpRecord followUpRecord) {
+        // 计算手术日期和当前日期之间的月份差异
+        long diffInMonths = ChronoUnit.MONTHS.between(surgeryDate, currentDate);
 
         // 将时间差(以月为单位)存储在 afterSurgeryDate 属性中
-        followUpRecordvo.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
+        followUpRecord.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
 
         // 根据时间间隔确定随访时间规则
         int monthsToNextVisit;
@@ -235,9 +230,9 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         }
 
         // 计算下次随访日期
-        cal.add(Calendar.MONTH, monthsToNextVisit);
-        return cal.getTime();
+        return currentDate.plusMonths(monthsToNextVisit);
     }
+
 
     /**
      * 批量删除

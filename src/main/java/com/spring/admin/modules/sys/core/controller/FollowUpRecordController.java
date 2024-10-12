@@ -62,12 +62,20 @@ public class FollowUpRecordController {
         return followUpRecordService.saveFollowUpRecord(vo);
     }
 
-    @PutMapping("/update")
-    @Operation(summary = "更新随访记录")
+    @PutMapping("/record")
+    @Operation(summary = "更新随访记录和状态")
     public R<FollowUpRecordVO> updateFollowUpRecord(HttpServletRequest request, @RequestParam String id, @RequestBody FollowUpRecordVO vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());
         vo.setModified(LocalDateTime.now());
         return followUpRecordService.updateFollowUpRecord(id, vo);
+    }
+
+    @PutMapping("/update")
+    @Operation(summary = "更新随访记录")
+    public R<FollowUpRecordVO> updateFollowUpInfo(HttpServletRequest request, @RequestParam String id, @RequestBody FollowUpRecordVO vo) {
+        vo.setModifiedBy(SecurityUtil.getCurrentUsername());
+        vo.setModified(LocalDateTime.now());
+        return followUpRecordService.updateFollowUpInfo(id, vo);
     }
 
     @DeleteMapping("/del")

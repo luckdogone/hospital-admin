@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -22,7 +24,7 @@ public class FollowUpRecord extends BaseEntity {
 
     @Schema(description = "随访日期", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "随访日期不能为空")
-    private Date followUpDate;
+    private LocalDate followUpDate;
 
     @Schema(description = "随访状态", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "随访状态不能为空")

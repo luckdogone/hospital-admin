@@ -28,7 +28,7 @@ public class FollowUpRecordVO implements Serializable {
     @Schema(description = "关联patient_info表的id")
     private String patientId;
 
-    private Date surgeryDate;
+    private LocalDate surgeryDate;
 
     /**
      * 术后月份
@@ -41,7 +41,7 @@ public class FollowUpRecordVO implements Serializable {
      */
     @Schema(description = "随访日期")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date followUpDate;
+    private LocalDate followUpDate;
 
     /**
      * 随访状态

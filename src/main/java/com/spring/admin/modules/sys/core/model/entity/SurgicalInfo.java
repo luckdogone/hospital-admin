@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -28,7 +29,7 @@ public class SurgicalInfo extends BaseEntity {
      * 手术时间
      */
     @Schema(description = "手术时间")
-    private Date surgeryTime;
+    private LocalDate surgeryTime;
 
     /**
      * 手术部位

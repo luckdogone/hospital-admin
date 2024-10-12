@@ -25,9 +25,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,18 +78,25 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
         return new BasePage<>(page.getCurrent(), page.getSize(), page.getTotal(), records);
     }
 
-    private Date parseSurgicalNumForDate(String surgicalNum) {
+    private LocalDate parseSurgicalNumForDate(String surgicalNum) {
         try {
             // 假设 surgicalNum 格式为 A2024052001
             String dateString = surgicalNum.substring(1, 9); // 20240520
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            return sdf.parse(dateString);
+
+            // 将日期字符串解析为 Date 对象
+            Date date = sdf.parse(dateString);
+
+            // 将 Date 转换为 LocalDate
+            Instant instant = date.toInstant();
+            return instant.atZone(ZoneId.systemDefault()).toLocalDate();
         } catch (Exception e) {
             throw new RuntimeException("解析手术编号中的手术日期失败: " + surgicalNum, e);
         }
     }
 
-    private Date extractSurgeryDateFromGeneralInfo(GeneralInfo generalInfo) {
+
+    private LocalDate extractSurgeryDateFromGeneralInfo(GeneralInfo generalInfo) {
         // 从 GeneralInfo 对象中获取 surgicalNum 属性
         String surgicalNum = generalInfo.getSurgicalNum();
 
@@ -125,16 +134,22 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
         GeneralInfo generalInfo = getGeneralInfoByPatientId(followUpRecordVO.getPatientId(), 1);
 
         // 提取手术日期并设置到 followUpRecordVO 中
-        Date surgeryDate = extractSurgeryDateFromGeneralInfo(generalInfo);
+        LocalDate surgeryDate = extractSurgeryDateFromGeneralInfo(generalInfo);
         followUpRecordVO.setSurgeryDate(surgeryDate);
 
         // 设置其他随访记录的属性
+        followUpRecordVO.setFollowUpStatus("等待中");
         followUpRecordVO.setSurgicalNum(generalInfo.getSurgicalNum());
         followUpRecordVO.setCreatedBy(SecurityUtil.getCurrentUsername());
         followUpRecordVO.setCreated(LocalDateTime.now());
         followUpRecordVO.setInputStatus(0);
         followUpRecordVO.setIsEnable(1);
         followUpRecordVO.setIsDel(1);
+
+        // 使用 ChronoUnit 计算手术日期和下次随访日期之间的月份差
+        long diffInMonths = ChronoUnit.MONTHS.between(followUpRecordVO.getSurgeryDate(), followUpRecordVO.getFollowUpDate());
+
+        followUpRecordVO.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
 
         // 转换 VO 为实体对象
         FollowUpRecord followUpRecord = BeanUtil.toBean(followUpRecordVO, FollowUpRecord.class);
@@ -148,7 +163,7 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
 
 
     /**
-     * 更新随访记录
+     * 更新并同步修改随访状态
      *
      * @param followUpRecordVO 随访记录实体
      */
@@ -172,7 +187,7 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
 
         // 解析 surgicalNum 以获取手术日期
         String surgicalNum = followUpRecordVO.getSurgicalNum();
-        Date surgeryDate = parseSurgicalNumForDate(surgicalNum);
+        LocalDate surgeryDate = parseSurgicalNumForDate(surgicalNum);
         followUpRecordVO.setSurgeryDate(surgeryDate);
         // 获取当前随访记录
         FollowUpRecord followUpRecord = getById(id);
@@ -185,25 +200,22 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
 
         // 如果录入状态是1 (录入中)，则修改为2 (已录入)
         if (followUpRecord.getFollowUpStatus().equals("待随访")) {
-            followUpRecordVO.setFollowUpStatus("已完成");
             // 更新当前随访记录
             BeanUtil.copyProperties(followUpRecordVO, followUpRecord, "id", "patientId");
-            System.out.println(followUpRecord.getFollowUpStatus());
-            System.out.println(followUpRecord);
+//            System.out.println(followUpRecord.getFollowUpStatus());
+//            System.out.println(followUpRecord);
+            followUpRecord.setFollowUpStatus("已完成");
             updateById(followUpRecord);
 
             // 计算下次随访日期并生成新的随访记录
 //            Date nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()), followUpRecordVO);
 
-            Date nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), followUpRecordVO.getFollowUpDate(), followUpRecordVO);
+            LocalDate nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), followUpRecordVO.getFollowUpDate(), followUpRecordVO);
 
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(nextFollowUpDate);
+            // 使用 ChronoUnit 计算手术日期和下次随访日期之间的月份差
+            long diffInMonths = ChronoUnit.MONTHS.between(followUpRecordVO.getSurgeryDate(), nextFollowUpDate);
 
-            // 根据手术日期和当前随访日期计算时间间隔
-            long diffInMillies = Math.abs(nextFollowUpDate.getTime() - surgeryDate.getTime());
-            long diffInMonths = diffInMillies / (30L * 24 * 60 * 60 * 1000);
-
+            // 创建新的 FollowUpRecord 对象
             FollowUpRecord newRecord = new FollowUpRecord();
             // 将时间差(以月为单位)存储在 afterSurgeryDate 属性中
             newRecord.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
@@ -217,14 +229,59 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
             newRecord.setIsDel(1);
             save(newRecord);
 
-        } else if (followUpRecord.getFollowUpStatus().equals("已完成")) {
-            // 如果录入状态是2 (已录入)，只更新当前记录
+        } else {
             BeanUtil.copyProperties(followUpRecordVO, followUpRecord, "id", "patientId");
             updateById(followUpRecord);
-        } else {
-            throw new RuntimeException("无效的录入状态");
+        }
+//        else if (followUpRecord.getFollowUpStatus().equals("已完成")) {
+//            // 如果录入状态是2 (已录入)，只更新当前记录
+//            BeanUtil.copyProperties(followUpRecordVO, followUpRecord, "id", "patientId");
+//            updateById(followUpRecord);
+//        }
+//        else {
+//            throw new RuntimeException("无效的录入状态");
+//        }
+
+        return R.OK(followUpRecordVO);
+    }
+
+
+    /**
+     * 更新随访记录
+     *
+     * @param followUpRecordVO 随访记录实体
+     */
+    @Transactional
+    public R<FollowUpRecordVO> updateFollowUpInfo(String id, FollowUpRecordVO followUpRecordVO) {
+
+        // 获取 GeneralInfo 列表
+        List<GeneralInfo> generalInfos = generalInfoService.getInfoByPatientId(followUpRecordVO.getPatientId(), 1);
+
+        // 检查集合中的元素数量是否为1，若不是则抛出异常
+        if (CollectionUtil.isEmpty(generalInfos) || generalInfos.size() != 1) {
+//            throw new RuntimeException("无法获取唯一的 GeneralInfo，数据可能被篡改或不完整。");
+            return R.NG("无法获取唯一的 GeneralInfo，数据可能被篡改或不完整。");
         }
 
+        // 获取唯一的 GeneralInfo 对象
+        GeneralInfo generalInfo = generalInfos.get(0);
+
+        // 从 GeneralInfo 对象中获取 surgicalNum 属性的值并设置到 followUpRecordVO 中
+        followUpRecordVO.setSurgicalNum(generalInfo.getSurgicalNum());
+        // 解析 surgicalNum 以获取手术日期
+        String surgicalNum = followUpRecordVO.getSurgicalNum();
+        LocalDate surgeryDate = parseSurgicalNumForDate(surgicalNum);
+        followUpRecordVO.setSurgeryDate(surgeryDate);
+
+        // 获取当前随访记录
+        FollowUpRecord followUpRecord = getById(id);
+        // 使用 ChronoUnit 计算手术日期和随访日期之间的月份差
+        long diffInMonths = ChronoUnit.MONTHS.between(followUpRecordVO.getSurgeryDate(), followUpRecordVO.getFollowUpDate());
+        System.out.println(diffInMonths);
+        followUpRecordVO.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
+        BeanUtil.copyProperties(followUpRecordVO, followUpRecord, "id", "patientId");
+        updateById(followUpRecord);
+        System.out.println(followUpRecord);
         return R.OK(followUpRecordVO);
     }
 
@@ -253,13 +310,9 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
      * @param currentDate   当前随访日期
      * @return 下次随访日期
      */
-    private Date calculateNextFollowUpDate(Date surgeryDate, Date currentDate, FollowUpRecordVO followUpRecordvo) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(currentDate);
-
-        // 根据手术日期和当前随访日期计算时间间隔
-        long diffInMillies = Math.abs(currentDate.getTime() - surgeryDate.getTime());
-        long diffInMonths = diffInMillies / (30L * 24 * 60 * 60 * 1000);
+    private LocalDate calculateNextFollowUpDate(LocalDate surgeryDate, LocalDate currentDate, FollowUpRecordVO followUpRecordvo) {
+        // 根据手术日期和当前随访日期计算时间间隔（以月份为单位）
+        long diffInMonths = ChronoUnit.MONTHS.between(surgeryDate, currentDate);
 
         // 将时间差(以月为单位)存储在 afterSurgeryDate 属性中
         followUpRecordvo.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
@@ -278,9 +331,9 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
         }
 
         // 计算下次随访日期
-        cal.add(Calendar.MONTH, monthsToNextVisit);
-        return cal.getTime();
+        return currentDate.plusMonths(monthsToNextVisit);
     }
+
 
     /**
      * 标记待随访记录
