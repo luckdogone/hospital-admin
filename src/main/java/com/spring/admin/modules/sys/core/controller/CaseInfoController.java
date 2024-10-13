@@ -31,7 +31,7 @@ public class CaseInfoController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表")
-//    @PreAuthorize("hasAuthority('general:query')")
+    @PreAuthorize("hasAuthority('case:query')")
     public R<List<CaseInfo>> getList(HttpServletRequest request, @ParameterObject CaseInfoQuery query) {
         List<CaseInfo> res = caseInfoService.queryList(query);
         return R.OK(res);
@@ -46,7 +46,7 @@ public class CaseInfoController {
 
     @PutMapping("/update")
     @Operation(summary = "更新信息")
-    @PreAuthorize("hasAuthority('general:update')")
+    @PreAuthorize("hasAuthority('case:update')")
     public R<CaseInfo> update(HttpServletRequest request, String id,
                                  @RequestBody CaseInfo vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());

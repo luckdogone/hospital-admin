@@ -32,6 +32,7 @@ public class PatientInfoController {
     private final PatientInfoService patientInfoService;
 
     @PostMapping("/query/search")
+    @PreAuthorize("hasAuthority('search:query')")
     public R<BasePage<PatientInfo>> searchQueryPage(@RequestBody SearchQueryDTO searchQuery) {
         System.out.println(searchQuery);
         BasePage<PatientInfo> page = patientInfoService.searchQueryPage(searchQuery);

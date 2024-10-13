@@ -29,7 +29,7 @@ public class AdjuvantInfoController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表")
-//    @PreAuthorize("hasAuthority('general:query')")
+    @PreAuthorize("hasAuthority('adjuvant:query')")
     public R<List<AdjuvantInfo>> getList(HttpServletRequest request, @ParameterObject AdjuvantInfoQuery query) {
         List<AdjuvantInfo> res = adjuvantInfoService.queryList(query);
         return R.OK(res);
@@ -44,7 +44,7 @@ public class AdjuvantInfoController {
 
     @PutMapping("/update")
     @Operation(summary = "更新信息")
-    @PreAuthorize("hasAuthority('general:update')")
+    @PreAuthorize("hasAuthority('adjuvant:update')")
     public R<AdjuvantInfo> update(HttpServletRequest request, String id,
                               @RequestBody AdjuvantInfo vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());

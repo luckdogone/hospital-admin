@@ -29,7 +29,7 @@ public class NeoadjuvantInfoController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表")
-//    @PreAuthorize("hasAuthority('general:query')")
+    @PreAuthorize("hasAuthority('neoadjuvant:query')")
     public R<List<NeoadjuvantInfo>> getList(HttpServletRequest request, @ParameterObject NeoadjuvantInfoQuery query) {
         List<NeoadjuvantInfo> res = neoadjuvantInfoService.queryList(query);
         return R.OK(res);
@@ -44,7 +44,7 @@ public class NeoadjuvantInfoController {
 
     @PutMapping("/update")
     @Operation(summary = "更新信息")
-    @PreAuthorize("hasAuthority('general:update')")
+    @PreAuthorize("hasAuthority('neoadjuvant:update')")
     public R<NeoadjuvantInfo> update(HttpServletRequest request, String id,
                               @RequestBody NeoadjuvantInfo vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());

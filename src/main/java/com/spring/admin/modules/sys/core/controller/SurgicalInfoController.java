@@ -30,7 +30,7 @@ public class SurgicalInfoController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表")
-//    @PreAuthorize("hasAuthority('general:query')")
+    @PreAuthorize("hasAuthority('surgical:query')")
     public R<List<SurgicalInfo>> getList(HttpServletRequest request, @ParameterObject SurgicalInfoQuery query) {
         List<SurgicalInfo> res = surgicalInfoService.queryList(query);
         return R.OK(res);
@@ -45,7 +45,7 @@ public class SurgicalInfoController {
 
     @PutMapping("/update")
     @Operation(summary = "更新信息")
-    @PreAuthorize("hasAuthority('general:update')")
+    @PreAuthorize("hasAuthority('surgical:update')")
     public R<SurgicalInfo> update(HttpServletRequest request, String id,
                               @RequestBody SurgicalInfo vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());

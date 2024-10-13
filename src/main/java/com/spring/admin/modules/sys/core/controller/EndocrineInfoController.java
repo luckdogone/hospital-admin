@@ -29,7 +29,7 @@ public class EndocrineInfoController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表")
-//    @PreAuthorize("hasAuthority('general:query')")
+    @PreAuthorize("hasAuthority('endocrine:query')")
     public R<List<EndocrineInfo>> getList(HttpServletRequest request, @ParameterObject EndocrineInfoQuery query) {
         List<EndocrineInfo> res = endocrineInfoService.queryList(query);
         return R.OK(res);
@@ -44,7 +44,7 @@ public class EndocrineInfoController {
 
     @PutMapping("/update")
     @Operation(summary = "更新信息")
-    @PreAuthorize("hasAuthority('general:update')")
+    @PreAuthorize("hasAuthority('endocrine:update')")
     public R<EndocrineInfo> update(HttpServletRequest request, String id,
                               @RequestBody EndocrineInfo vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());

@@ -29,7 +29,7 @@ public class RadiationInfoController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表")
-//    @PreAuthorize("hasAuthority('general:query')")
+    @PreAuthorize("hasAuthority('radiation:query')")
     public R<List<RadiationInfo>> getList(HttpServletRequest request, @ParameterObject RadiationInfoQuery query) {
         List<RadiationInfo> res = radiationInfoService.queryList(query);
         return R.OK(res);
@@ -44,7 +44,7 @@ public class RadiationInfoController {
 
     @PutMapping("/update")
     @Operation(summary = "更新信息")
-    @PreAuthorize("hasAuthority('general:update')")
+    @PreAuthorize("hasAuthority('radiation:update')")
     public R<RadiationInfo> update(HttpServletRequest request, String id,
                               @RequestBody RadiationInfo vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());

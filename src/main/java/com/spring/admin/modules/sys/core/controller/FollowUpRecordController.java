@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class FollowUpRecordController {
 
     @GetMapping("/query/page")
     @Operation(summary = "分页查询")
+    @PreAuthorize("hasAuthority('follow:query')")
     public R<BasePage<PatientInfoVO>> getListPage(HttpServletRequest request, @ParameterObject FollowQuery query) {
         BasePage<PatientInfoVO> page = followUpRecordService.queryPage(query);
         return R.OK(page);
@@ -37,6 +39,7 @@ public class FollowUpRecordController {
 
     @GetMapping("/query/list")
     @Operation(summary = "列表查询")
+    @PreAuthorize("hasAuthority('follow:query')")
     public R<List<PatientInfoVO>> getList(HttpServletRequest request, @ParameterObject FollowQuery query) {
         List<PatientInfoVO> res = followUpRecordService.queryList(query);
         return R.OK(res);
@@ -44,6 +47,7 @@ public class FollowUpRecordController {
 
     @GetMapping("/query/follow")
     @Operation(summary = "通过patientId查询随访记录")
+    @PreAuthorize("hasAuthority('follow:query')")
     public R<List<FollowUpRecord>> getListFollow(HttpServletRequest request, @RequestParam String patientId) {
         List<FollowUpRecord> res = followUpRecordService.queryByPatientId(patientId);
         return R.OK(res);
@@ -51,6 +55,7 @@ public class FollowUpRecordController {
 
     @GetMapping("/query/pending")
     @Operation(summary = "查询待随访记录")
+    @PreAuthorize("hasAuthority('follow:pending')")
     public R<BasePage<FollowUpRecordVO>> getPendingVisitRecords(HttpServletRequest request, @ParameterObject FollowQuery query) {
         BasePage<FollowUpRecordVO> page = followUpRecordService.queryPendingVisitRecords(query);
         return R.OK(page);
@@ -58,12 +63,14 @@ public class FollowUpRecordController {
 
     @PostMapping("/save")
     @Operation(summary = "保存随访记录")
+    @PreAuthorize("hasAuthority('follow:save')")
     public R<FollowUpRecordVO> saveFollowUpRecord(@RequestBody FollowUpRecordVO vo) {
         return followUpRecordService.saveFollowUpRecord(vo);
     }
 
     @PutMapping("/record")
     @Operation(summary = "更新随访记录和状态")
+    @PreAuthorize("hasAuthority('follow:record')")
     public R<FollowUpRecordVO> updateFollowUpRecord(HttpServletRequest request, @RequestParam String id, @RequestBody FollowUpRecordVO vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());
         vo.setModified(LocalDateTime.now());
@@ -72,6 +79,7 @@ public class FollowUpRecordController {
 
     @PutMapping("/update")
     @Operation(summary = "更新随访记录")
+    @PreAuthorize("hasAuthority('follow:update')")
     public R<FollowUpRecordVO> updateFollowUpInfo(HttpServletRequest request, @RequestParam String id, @RequestBody FollowUpRecordVO vo) {
         vo.setModifiedBy(SecurityUtil.getCurrentUsername());
         vo.setModified(LocalDateTime.now());
@@ -80,6 +88,7 @@ public class FollowUpRecordController {
 
     @DeleteMapping("/del")
     @Operation(summary = "删除信息")
+    @PreAuthorize("hasAuthority('follow:del')")
     public R<String> del(HttpServletRequest request, @RequestBody List<String> ids) {
         return followUpRecordService.deleteByIds(ids);
     }
