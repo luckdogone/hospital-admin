@@ -115,17 +115,35 @@ public class FollowUpRecordVO implements Serializable {
     @Schema(description = "X月复查胸部CT是否异常")
     private Integer chestCtAbnormal;
 
+    @Schema(description = "X月复查胸部CT异常结果")
+    private String chestCtAbnormalResult;
+
     /**
      * X月复查头颅MR是否异常
      */
     @Schema(description = "X月复查头颅MR是否异常")
     private Integer headMrAbnormal;
 
+    @Schema(description = "X月复查头颅MR异常结果")
+    private String headMrAbnormalResult;
+
     /**
      * X月复查全身骨显像是否异常
      */
     @Schema(description = "X月复查全身骨显像是否异常")
     private Integer boneScanAbnormal;
+
+    @Schema(description = "X月复查全身骨显像异常结果")
+    private String boneScanAbnormalResult;
+
+    @Schema(description = "量表评分")
+    private Double scaleRating;
+
+    @Schema(description = "是否更改治疗方案")
+    private Integer isChangeTreatmentPlan;
+
+    @Schema(description = "当前治疗方案")
+    private String currentTreatmentPlan;
 
     /**
      * 备注

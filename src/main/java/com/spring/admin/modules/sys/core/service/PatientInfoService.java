@@ -42,10 +42,10 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
 
     public BasePage<PatientInfo> searchQueryPage(SearchQueryDTO searchQuery) {
         Page<PatientInfo> page = new Page<>(searchQuery.getCurrent(), searchQuery.getSize());
-        System.out.println(searchQuery.getCurrent());
-        System.out.println(searchQuery.getSize());
+//        System.out.println(searchQuery.getCurrent());
+//        System.out.println(searchQuery.getSize());
         List<PatientInfo> records = this.baseMapper.searchQueryPage(page, searchQuery);
-        System.out.println(records);
+//        System.out.println(records);
         return new BasePage<>(page.getCurrent(), page.getSize(), page.getTotal(), records);
     }
 

@@ -1,5 +1,6 @@
 package com.spring.admin.modules.sys.core.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.spring.admin.data.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -122,6 +123,18 @@ public class CaseInfo extends BaseEntity {
     @Schema(description = "癌抗原125（CA125）")
     private Float ca125;
 
+    @Schema(description = "月经状态（选项：绝经、未绝经、子宫切除）")
+    private Integer menstrualStatus;
+
+    @Schema(description = "绝经年龄")
+    private Integer menopausalAge;
+
+    @Schema(description = "个人既往史")
+    private String personalMedicalHistory;
+
+    @Schema(description = "家族史")
+    private String familyHistory;
+
     @Schema(description = "有无乳腺粗针穿刺（0: 无, 1: 有）")
     private Integer breastCoreNeedle;
 
@@ -139,6 +152,27 @@ public class CaseInfo extends BaseEntity {
 
     @Schema(description = "腋窝细针穿刺病理结果")
     private String axillaryFineNeedleResult;
+
+    @Schema(description = "有无锁骨上淋巴结穿刺（0:无, 1:有 无状态不会有下列属性的值）")
+    private Integer collarboneLymphNeedle;
+
+    @Schema(description = "锁骨上淋巴结穿刺病理结果")
+    private String collarboneLymphNeedleResult;
+
+    @Schema(description = "P120")
+    @TableField("p_120")
+    private String p120;
+
+    @Schema(description = "E-cad")
+    private String eCad;
+
+    @Schema(description = "CK5/6")
+    @TableField("ck_5_6")
+    private String ck56;
+
+    @Schema(description = "GATA3")
+    @TableField("gata_3")
+    private Integer gata3;
 
     @Schema(description = "有无免疫组化结果（0: 无, 1: 有）")
     private Integer ihcResult;

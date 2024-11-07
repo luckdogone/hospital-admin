@@ -1,5 +1,6 @@
 package com.spring.admin.modules.sys.core.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.spring.admin.data.domain.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -156,9 +157,49 @@ public class SurgicalInfo extends BaseEntity {
     @Schema(description = "分型：三阴性/Luminal A/Luminal B HER2阴性型/Luminal B HER2阳性型")
     private String subtype;
 
+    // 特殊类型肿瘤
+    @Schema(description = "特殊类型肿瘤")
+    private String specialTypeTumors;
+
     // MP级别/级
     @Schema(description = "MP级别: 无浸润(MP0)/微浸润(MP1)/中度浸润(MP2)/重度浸润(MP3)/完全浸润(MP4)")
     private Integer mpLevel;
+
+    @Schema(description = "RCB评分(选项：0,1,2,3)")
+    private Integer rcb;
+
+    @Schema(description = "P120")
+    @TableField("p_120")
+    private String p120;
+
+    @Schema(description = "E-cad")
+    private String eCad;
+
+    @Schema(description = "CK5/6")
+    @TableField("ck_5_6")
+    private String ck56;
+
+    @Schema(description = "GATA3")
+    @TableField("gata_3")
+    private Integer gata3;
+
+    @Schema(description = "P63")
+    @TableField("p_63")
+    private String p63;
+
+    @Schema(description = "P53")
+    @TableField("p_53")
+    private String p53;
+
+    @Schema(description = "TRPS1")
+    @TableField("trps_1")
+    private String trps1;
+
+    @Schema(description = "SAM")
+    private String sam;
+
+    @Schema(description = "EGFR")
+    private String egfr;
 
     // 入录信息
     /**

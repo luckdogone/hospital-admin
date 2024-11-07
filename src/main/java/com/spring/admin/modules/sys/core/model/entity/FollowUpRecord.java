@@ -78,6 +78,15 @@ public class FollowUpRecord extends BaseEntity {
     @Schema(description = "X月复查全身骨显像异常结果")
     private String boneScanAbnormalResult;
 
+    @Schema(description = "量表评分")
+    private Double scaleRating;
+
+    @Schema(description = "是否更改治疗方案")
+    private Integer isChangeTreatmentPlan;
+
+    @Schema(description = "当前治疗方案")
+    private String currentTreatmentPlan;
+
     @Schema(description = "备注")
     private String notes;
 

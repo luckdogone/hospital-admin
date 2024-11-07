@@ -229,6 +229,18 @@
             <if test="searchQuery.caseInfo.ca125 != null">
                 AND c.ca125 = #{searchQuery.caseInfo.ca125}
             </if>
+            <if test="searchQuery.caseInfo.menstrualStatus != null">
+                AND c.menstrual_status = #{searchQuery.caseInfo.menstrualStatus}
+            </if>
+            <if test="searchQuery.caseInfo.menopausalAge != null">
+                AND c.menopausal_age = #{searchQuery.caseInfo.menopausalAge}
+            </if>
+            <if test="searchQuery.caseInfo.personalMedicalHistory != null">
+                AND c.personal_medical_history = #{searchQuery.caseInfo.personalMedicalHistory}
+            </if>
+            <if test="searchQuery.caseInfo.familyHistory != null">
+                AND c.family_history = #{searchQuery.caseInfo.familyHistory}
+            </if>
             <if test="searchQuery.caseInfo.breastCoreNeedle != null">
                 AND c.breast_core_needle = #{searchQuery.caseInfo.breastCoreNeedle}
             </if>
@@ -246,6 +258,12 @@
             </if>
             <if test="searchQuery.caseInfo.axillaryFineNeedleResult != null and searchQuery.caseInfo.axillaryFineNeedleResult != ''">
                 AND c.axillary_fine_needle_result LIKE CONCAT('%', #{searchQuery.caseInfo.axillaryFineNeedleResult}, '%')
+            </if>
+            <if test="searchQuery.caseInfo.collarboneLymphNeedle != null">
+                AND c.collarbone_lymph_needle = #{searchQuery.caseInfo.collarboneLymphNeedle}
+            </if>
+            <if test="searchQuery.caseInfo.collarboneLymphNeedleResult != null and searchQuery.caseInfo.collarboneLymphNeedleResult != ''">
+                AND c.collarbone_lymph_needle_result LIKE CONCAT('%', #{searchQuery.caseInfo.collarboneLymphNeedleResult}, '%')
             </if>
             <if test="searchQuery.caseInfo.ihcResult != null">
                 AND c.ihc_result = #{searchQuery.caseInfo.ihcResult}
@@ -521,9 +539,43 @@
             <if test="searchQuery.surgicalInfo.subtype != null and searchQuery.surgicalInfo.subtype != ''">
                 AND s.subtype = #{searchQuery.surgicalInfo.subtype}
             </if>
+            <!-- 特殊类型肿瘤 -->
+            <if test="searchQuery.surgicalInfo.specialTypeTumors != null and searchQuery.surgicalInfo.specialTypeTumors != ''">
+                AND s.special_type_tumors = #{searchQuery.surgicalInfo.specialTypeTumors}
+            </if>
             <!-- MP级别 -->
             <if test="searchQuery.surgicalInfo.mpLevel != null and searchQuery.surgicalInfo.mpLevel != ''">
                 AND s.mp_level = #{searchQuery.surgicalInfo.mpLevel}
+            </if>
+            <if test="searchQuery.surgicalInfo.rcb != null and searchQuery.surgicalInfo.rcb != ''">
+                AND s.rcb = #{searchQuery.surgicalInfo.rcb}
+            </if>
+            <if test="searchQuery.surgicalInfo.p120 != null and searchQuery.surgicalInfo.p120 != ''">
+                AND s.p_120 = #{searchQuery.surgicalInfo.p120}
+            </if>
+            <if test="searchQuery.surgicalInfo.eCad != null and searchQuery.surgicalInfo.eCad != ''">
+                AND s.e_cad = #{searchQuery.surgicalInfo.eCad}
+            </if>
+            <if test="searchQuery.surgicalInfo.ck56 != null and searchQuery.surgicalInfo.ck56 != ''">
+                AND s.ck_5_6 = #{searchQuery.surgicalInfo.ck56}
+            </if>
+            <if test="searchQuery.surgicalInfo.gata3 != null and searchQuery.surgicalInfo.gata3 != ''">
+                AND s.gata_3 = #{searchQuery.surgicalInfo.gata3}
+            </if>
+            <if test="searchQuery.surgicalInfo.p63 != null and searchQuery.surgicalInfo.p63 != ''">
+                AND s.p_63 = #{searchQuery.surgicalInfo.p63}
+            </if>
+            <if test="searchQuery.surgicalInfo.p53 != null and searchQuery.surgicalInfo.p53 != ''">
+                AND s.p_53 = #{searchQuery.surgicalInfo.p53}
+            </if>
+            <if test="searchQuery.surgicalInfo.trps1 != null and searchQuery.surgicalInfo.trps1 != ''">
+                AND s.trps_1 = #{searchQuery.surgicalInfo.trps1}
+            </if>
+            <if test="searchQuery.surgicalInfo.sam != null and searchQuery.surgicalInfo.sam != ''">
+                AND s.sam = #{searchQuery.surgicalInfo.sam}
+            </if>
+            <if test="searchQuery.surgicalInfo.egfr != null and searchQuery.surgicalInfo.egfr != ''">
+                AND s.egfr = #{searchQuery.surgicalInfo.egfr}
             </if>
             <!-- 录入信息 -->
             <if test="searchQuery.surgicalInfo.inputStatus != null">
