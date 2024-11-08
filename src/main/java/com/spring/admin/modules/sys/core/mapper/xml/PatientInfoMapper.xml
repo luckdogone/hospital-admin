@@ -68,34 +68,34 @@
             <if test="searchQuery.patientInfo.name != null and searchQuery.patientInfo.name != ''">
                 AND t.name LIKE CONCAT('%', #{searchQuery.patientInfo.name}, '%')
             </if>
-            <if test="searchQuery.patientInfo.sex != null">
+            <if test="searchQuery.patientInfo.sex != null and searchQuery.patientInfo.sex != ''">
                 AND t.sex = #{searchQuery.patientInfo.sex}
             </if>
-            <if test="searchQuery.patientInfo.age != null">
+            <if test="searchQuery.patientInfo.age != null and searchQuery.patientInfo.age != ''">
                 AND t.age = #{searchQuery.patientInfo.age}
             </if>
             <if test="searchQuery.patientInfo.address != null and searchQuery.patientInfo.address != ''">
                 AND t.address LIKE CONCAT('%', #{searchQuery.patientInfo.address}, '%')
             </if>
             <if test="searchQuery.patientInfo.phone != null and searchQuery.patientInfo.phone != ''">
-                AND t.phone = #{searchQuery.patientInfo.phone}
+                AND t.phone LIKE CONCAT('%', #{searchQuery.patientInfo.phone}, '%')
             </if>
             <if test="searchQuery.patientInfo.contactPhone != null and searchQuery.patientInfo.contactPhone != ''">
-                AND t.contact_phone = #{searchQuery.patientInfo.contactPhone}
+                AND t.contact_phone LIKE CONCAT('%', #{searchQuery.patientInfo.contactPhone}, '%')
             </if>
-            <if test="searchQuery.patientInfo.height != null">
+            <if test="searchQuery.patientInfo.height != null and searchQuery.patientInfo.height !=''">
                 AND t.height = #{searchQuery.patientInfo.height}
             </if>
-            <if test="searchQuery.patientInfo.weight != null">
+            <if test="searchQuery.patientInfo.weight != null and searchQuery.patientInfo.weight !=''">
                 AND t.weight = #{searchQuery.patientInfo.weight}
             </if>
-            <if test="searchQuery.patientInfo.inputStatus != null">
+            <if test="searchQuery.patientInfo.inputStatus != null and searchQuery.patientInfo.inputStatus !=''">
                 AND t.input_status = #{searchQuery.patientInfo.inputStatus}
             </if>
-            <if test="searchQuery.patientInfo.isEnable != null">
+            <if test="searchQuery.patientInfo.isEnable != null and searchQuery.patientInfo.isEnable !=''">
                 AND t.is_enable = #{searchQuery.patientInfo.isEnable}
             </if>
-            <if test="searchQuery.patientInfo.isDel != null">
+            <if test="searchQuery.patientInfo.isDel != null and searchQuery.patientInfo.isDel !=''">
                 AND t.is_del = #{searchQuery.patientInfo.isDel}
             </if>
         </if>
@@ -108,26 +108,26 @@
             <if test="searchQuery.generalInfo.caseNo != null and searchQuery.generalInfo.caseNo != ''">
                 AND g.case_no LIKE CONCAT('%', #{searchQuery.generalInfo.caseNo}, '%')
             </if>
-            <if test="searchQuery.generalInfo.inputStatus != null">
+            <if test="searchQuery.generalInfo.inputStatus != null and searchQuery.generalInfo.inputStatus != ''">
                 AND g.input_status = #{searchQuery.generalInfo.inputStatus}
             </if>
-            <if test="searchQuery.generalInfo.isEnable != null">
+            <if test="searchQuery.generalInfo.isEnable != null and searchQuery.generalInfo.isEnable != ''">
                 AND g.is_enable = #{searchQuery.generalInfo.isEnable}
             </if>
-            <if test="searchQuery.generalInfo.isDel != null">
+            <if test="searchQuery.generalInfo.isDel != null and searchQuery.generalInfo.isDel != ''">
                 AND g.is_del = #{searchQuery.generalInfo.isDel}
             </if>
         </if>
 
         <!-- CaseInfo 条件 -->
         <if test="searchQuery.caseInfo != null">
-            <if test="searchQuery.caseInfo.ultrasoundStatus != null">
+            <if test="searchQuery.caseInfo.ultrasoundStatus != null and searchQuery.caseInfo.ultrasoundStatus != ''">
                 AND c.ultrasound_status = #{searchQuery.caseInfo.ultrasoundStatus}
             </if>
             <if test="searchQuery.caseInfo.ultrasoundLeftSize != null and searchQuery.caseInfo.ultrasoundLeftSize != ''">
                 AND c.ultrasound_left_size = #{searchQuery.caseInfo.ultrasoundLeftSize}
             </if>
-            <if test="searchQuery.caseInfo.ultrasoundLeftBloodFlow != null">
+            <if test="searchQuery.caseInfo.ultrasoundLeftBloodFlow != null and searchQuery.caseInfo.ultrasoundLeftBloodFlow != ''">
                 AND c.ultrasound_left_blood_flow = #{searchQuery.caseInfo.ultrasoundLeftBloodFlow}
             </if>
             <if test="searchQuery.caseInfo.ultrasoundLeftBirads != null and searchQuery.caseInfo.ultrasoundLeftBirads != ''">
@@ -136,19 +136,19 @@
             <if test="searchQuery.caseInfo.ultrasoundRightSize != null and searchQuery.caseInfo.ultrasoundRightSize != ''">
                 AND c.ultrasound_right_size = #{searchQuery.caseInfo.ultrasoundRightSize}
             </if>
-            <if test="searchQuery.caseInfo.ultrasoundRightBloodFlow != null">
+            <if test="searchQuery.caseInfo.ultrasoundRightBloodFlow != null and searchQuery.caseInfo.ultrasoundRightBloodFlow != ''">
                 AND c.ultrasound_right_blood_flow = #{searchQuery.caseInfo.ultrasoundRightBloodFlow}
             </if>
             <if test="searchQuery.caseInfo.ultrasoundRightBirads != null and searchQuery.caseInfo.ultrasoundRightBirads != ''">
                 AND c.ultrasound_right_birads = #{searchQuery.caseInfo.ultrasoundRightBirads}
             </if>
-            <if test="searchQuery.caseInfo.mammographyStatus != null">
+            <if test="searchQuery.caseInfo.mammographyStatus != null and searchQuery.caseInfo.mammographyStatus != ''">
                 AND c.mammography_status = #{searchQuery.caseInfo.mammographyStatus}
             </if>
             <if test="searchQuery.caseInfo.mammographyLeftSize != null and searchQuery.caseInfo.mammographyLeftSize != ''">
                 AND c.mammography_left_size = #{searchQuery.caseInfo.mammographyLeftSize}
             </if>
-            <if test="searchQuery.caseInfo.mammographyLeftAggregation != null">
+            <if test="searchQuery.caseInfo.mammographyLeftAggregation != null and searchQuery.caseInfo.mammographyLeftAggregation != ''">
                 AND c.mammography_left_aggregation = #{searchQuery.caseInfo.mammographyLeftAggregation}
             </if>
             <if test="searchQuery.caseInfo.mammographyLeftBirads != null and searchQuery.caseInfo.mammographyLeftBirads != ''">
@@ -157,19 +157,19 @@
             <if test="searchQuery.caseInfo.mammographyRightSize != null and searchQuery.caseInfo.mammographyRightSize != ''">
                 AND c.mammography_right_size = #{searchQuery.caseInfo.mammographyRightSize}
             </if>
-            <if test="searchQuery.caseInfo.mammographyRightAggregation != null">
+            <if test="searchQuery.caseInfo.mammographyRightAggregation != null and searchQuery.caseInfo.mammographyRightAggregation != ''">
                 AND c.mammography_right_aggregation = #{searchQuery.caseInfo.mammographyRightAggregation}
             </if>
             <if test="searchQuery.caseInfo.mammographyRightBirads != null and searchQuery.caseInfo.mammographyRightBirads != ''">
                 AND c.mammography_right_birads = #{searchQuery.caseInfo.mammographyRightBirads}
             </if>
-            <if test="searchQuery.caseInfo.mriStatus != null">
+            <if test="searchQuery.caseInfo.mriStatus != null and searchQuery.caseInfo.mriStatus != ''">
                 AND c.mri_status = #{searchQuery.caseInfo.mriStatus}
             </if>
             <if test="searchQuery.caseInfo.mriLeftSize != null and searchQuery.caseInfo.mriLeftSize != ''">
                 AND c.mri_left_size = #{searchQuery.caseInfo.mriLeftSize}
             </if>
-            <if test="searchQuery.caseInfo.mriLeftBloodFlow != null">
+            <if test="searchQuery.caseInfo.mriLeftBloodFlow != null and searchQuery.caseInfo.mriLeftBloodFlow != ''">
                 AND c.mri_left_blood_flow = #{searchQuery.caseInfo.mriLeftBloodFlow}
             </if>
             <if test="searchQuery.caseInfo.mriLeftBirads != null and searchQuery.caseInfo.mriLeftBirads != ''">
@@ -178,109 +178,109 @@
             <if test="searchQuery.caseInfo.mriRightSize != null and searchQuery.caseInfo.mriRightSize != ''">
                 AND c.mri_right_size = #{searchQuery.caseInfo.mriRightSize}
             </if>
-            <if test="searchQuery.caseInfo.mriRightBloodFlow != null">
+            <if test="searchQuery.caseInfo.mriRightBloodFlow != null and searchQuery.caseInfo.mriRightBloodFlow != ''">
                 AND c.mri_right_blood_flow = #{searchQuery.caseInfo.mriRightBloodFlow}
             </if>
             <if test="searchQuery.caseInfo.mriRightBirads != null and searchQuery.caseInfo.mriRightBirads != ''">
                 AND c.mri_right_birads = #{searchQuery.caseInfo.mriRightBirads}
             </if>
-            <if test="searchQuery.caseInfo.wbc != null">
+            <if test="searchQuery.caseInfo.wbc != null and searchQuery.caseInfo.wbc != ''">
                 AND c.wbc = #{searchQuery.caseInfo.wbc}
             </if>
-            <if test="searchQuery.caseInfo.rbc != null">
+            <if test="searchQuery.caseInfo.rbc != null and searchQuery.caseInfo.rbc != ''">
                 AND c.rbc = #{searchQuery.caseInfo.rbc}
             </if>
-            <if test="searchQuery.caseInfo.platelets != null">
+            <if test="searchQuery.caseInfo.platelets != null and searchQuery.caseInfo.platelets != ''">
                 AND c.platelets = #{searchQuery.caseInfo.platelets}
             </if>
-            <if test="searchQuery.caseInfo.alt != null">
+            <if test="searchQuery.caseInfo.alt != null and searchQuery.caseInfo.alt != ''">
                 AND c.alt = #{searchQuery.caseInfo.alt}
             </if>
-            <if test="searchQuery.caseInfo.ast != null">
+            <if test="searchQuery.caseInfo.ast != null and searchQuery.caseInfo.ast != ''">
                 AND c.ast = #{searchQuery.caseInfo.ast}
             </if>
-            <if test="searchQuery.caseInfo.alkalinePhosphatase != null">
+            <if test="searchQuery.caseInfo.alkalinePhosphatase != null and searchQuery.caseInfo.alkalinePhosphatase != ''">
                 AND c.alkaline_phosphatase = #{searchQuery.caseInfo.alkalinePhosphatase}
             </if>
-            <if test="searchQuery.caseInfo.creatinine != null">
+            <if test="searchQuery.caseInfo.creatinine != null and searchQuery.caseInfo.creatinine != ''">
                 AND c.creatinine = #{searchQuery.caseInfo.creatinine}
             </if>
-            <if test="searchQuery.caseInfo.bun != null">
+            <if test="searchQuery.caseInfo.bun != null and searchQuery.caseInfo.bun != ''">
                 AND c.bun = #{searchQuery.caseInfo.bun}
             </if>
-            <if test="searchQuery.caseInfo.uricAcid != null">
+            <if test="searchQuery.caseInfo.uricAcid != null and searchQuery.caseInfo.uricAcid != ''">
                 AND c.uric_acid = #{searchQuery.caseInfo.uricAcid}
             </if>
-            <if test="searchQuery.caseInfo.triglycerides != null">
+            <if test="searchQuery.caseInfo.triglycerides != null and searchQuery.caseInfo.triglycerides != ''">
                 AND c.triglycerides = #{searchQuery.caseInfo.triglycerides}
             </if>
-            <if test="searchQuery.caseInfo.ldl != null">
+            <if test="searchQuery.caseInfo.ldl != null and searchQuery.caseInfo.ldl != ''">
                 AND c.ldl = #{searchQuery.caseInfo.ldl}
             </if>
-            <if test="searchQuery.caseInfo.dimer != null">
+            <if test="searchQuery.caseInfo.dimer != null and searchQuery.caseInfo.dimer != ''">
                 AND c.dimer = #{searchQuery.caseInfo.dimer}
             </if>
-            <if test="searchQuery.caseInfo.cea != null">
+            <if test="searchQuery.caseInfo.cea != null and searchQuery.caseInfo.cea != ''">
                 AND c.cea = #{searchQuery.caseInfo.cea}
             </if>
-            <if test="searchQuery.caseInfo.ca153 != null">
+            <if test="searchQuery.caseInfo.ca153 != null and searchQuery.caseInfo.ca153 != ''">
                 AND c.ca153 = #{searchQuery.caseInfo.ca153}
             </if>
-            <if test="searchQuery.caseInfo.ca125 != null">
+            <if test="searchQuery.caseInfo.ca125 != null and searchQuery.caseInfo.ca125 != ''">
                 AND c.ca125 = #{searchQuery.caseInfo.ca125}
             </if>
-            <if test="searchQuery.caseInfo.menstrualStatus != null">
+            <if test="searchQuery.caseInfo.menstrualStatus != null and searchQuery.caseInfo.menstrualStatus != ''">
                 AND c.menstrual_status = #{searchQuery.caseInfo.menstrualStatus}
             </if>
-            <if test="searchQuery.caseInfo.menopausalAge != null">
+            <if test="searchQuery.caseInfo.menopausalAge != null and searchQuery.caseInfo.menopausalAge != ''">
                 AND c.menopausal_age = #{searchQuery.caseInfo.menopausalAge}
             </if>
-            <if test="searchQuery.caseInfo.personalMedicalHistory != null">
+            <if test="searchQuery.caseInfo.personalMedicalHistory != null and searchQuery.caseInfo.personalMedicalHistory != ''">
                 AND c.personal_medical_history = #{searchQuery.caseInfo.personalMedicalHistory}
             </if>
-            <if test="searchQuery.caseInfo.familyHistory != null">
+            <if test="searchQuery.caseInfo.familyHistory != null and searchQuery.caseInfo.familyHistory != ''">
                 AND c.family_history = #{searchQuery.caseInfo.familyHistory}
             </if>
-            <if test="searchQuery.caseInfo.breastCoreNeedle != null">
+            <if test="searchQuery.caseInfo.breastCoreNeedle != null and searchQuery.caseInfo.breastCoreNeedle != ''">
                 AND c.breast_core_needle = #{searchQuery.caseInfo.breastCoreNeedle}
             </if>
             <if test="searchQuery.caseInfo.breastCoreNeedleResult != null and searchQuery.caseInfo.breastCoreNeedleResult != ''">
                 AND c.breast_core_needle_result LIKE CONCAT('%', #{searchQuery.caseInfo.breastCoreNeedleResult}, '%')
             </if>
-            <if test="searchQuery.caseInfo.axillaryCoreNeedle != null">
+            <if test="searchQuery.caseInfo.axillaryCoreNeedle != null and searchQuery.caseInfo.axillaryCoreNeedle != ''">
                 AND c.axillary_core_needle = #{searchQuery.caseInfo.axillaryCoreNeedle}
             </if>
             <if test="searchQuery.caseInfo.axillaryCoreNeedleResult != null and searchQuery.caseInfo.axillaryCoreNeedleResult != ''">
                 AND c.axillary_core_needle_result LIKE CONCAT('%', #{searchQuery.caseInfo.axillaryCoreNeedleResult}, '%')
             </if>
-            <if test="searchQuery.caseInfo.axillaryFineNeedle != null">
+            <if test="searchQuery.caseInfo.axillaryFineNeedle != null and searchQuery.caseInfo.axillaryFineNeedle != ''">
                 AND c.axillary_fine_needle = #{searchQuery.caseInfo.axillaryFineNeedle}
             </if>
             <if test="searchQuery.caseInfo.axillaryFineNeedleResult != null and searchQuery.caseInfo.axillaryFineNeedleResult != ''">
                 AND c.axillary_fine_needle_result LIKE CONCAT('%', #{searchQuery.caseInfo.axillaryFineNeedleResult}, '%')
             </if>
-            <if test="searchQuery.caseInfo.collarboneLymphNeedle != null">
+            <if test="searchQuery.caseInfo.collarboneLymphNeedle != null and searchQuery.caseInfo.collarboneLymphNeedle != ''">
                 AND c.collarbone_lymph_needle = #{searchQuery.caseInfo.collarboneLymphNeedle}
             </if>
             <if test="searchQuery.caseInfo.collarboneLymphNeedleResult != null and searchQuery.caseInfo.collarboneLymphNeedleResult != ''">
                 AND c.collarbone_lymph_needle_result LIKE CONCAT('%', #{searchQuery.caseInfo.collarboneLymphNeedleResult}, '%')
             </if>
-            <if test="searchQuery.caseInfo.ihcResult != null">
+            <if test="searchQuery.caseInfo.ihcResult != null and searchQuery.caseInfo.ihcResult != ''">
                 AND c.ihc_result = #{searchQuery.caseInfo.ihcResult}
             </if>
-            <if test="searchQuery.caseInfo.erPct != null">
+            <if test="searchQuery.caseInfo.erPct != null and searchQuery.caseInfo.erPct != ''">
                 AND c.er_pct = #{searchQuery.caseInfo.erPct}
             </if>
-            <if test="searchQuery.caseInfo.prPct != null">
+            <if test="searchQuery.caseInfo.prPct != null and searchQuery.caseInfo.prPct != ''">
                 AND c.pr_pct = #{searchQuery.caseInfo.prPct}
             </if>
             <if test="searchQuery.caseInfo.her2 != null and searchQuery.caseInfo.her2 != ''">
                 AND c.her2 = #{searchQuery.caseInfo.her2}
             </if>
-            <if test="searchQuery.caseInfo.ki67Pct != null">
+            <if test="searchQuery.caseInfo.ki67Pct != null and searchQuery.caseInfo.ki67Pct != ''">
                 AND c.ki67_pct = #{searchQuery.caseInfo.ki67Pct}
             </if>
-            <if test="searchQuery.caseInfo.arPct != null">
+            <if test="searchQuery.caseInfo.arPct != null and searchQuery.caseInfo.arPct != ''">
                 AND c.ar_pct = #{searchQuery.caseInfo.arPct}
             </if>
             <if test="searchQuery.caseInfo.fishTest != null and searchQuery.caseInfo.fishTest != ''">
@@ -295,23 +295,23 @@
             <if test="searchQuery.caseInfo.subtype != null and searchQuery.caseInfo.subtype != ''">
                 AND c.subtype = #{searchQuery.caseInfo.subtype}
             </if>
-            <if test="searchQuery.caseInfo.inputStatus != null">
+            <if test="searchQuery.caseInfo.inputStatus != null and searchQuery.caseInfo.inputStatus != ''">
                 AND c.input_status = #{searchQuery.caseInfo.inputStatus}
             </if>
-            <if test="searchQuery.caseInfo.isEnable != null">
+            <if test="searchQuery.caseInfo.isEnable != null and searchQuery.caseInfo.isEnable != ''">
                 AND c.is_enable = #{searchQuery.caseInfo.isEnable}
             </if>
-            <if test="searchQuery.caseInfo.isDel != null">
+            <if test="searchQuery.caseInfo.isDel != null and searchQuery.caseInfo.isDel != ''">
                 AND c.is_del = #{searchQuery.caseInfo.isDel}
             </if>
         </if>
 
         <!-- NeoadjuvantInfo 条件 -->
         <if test="searchQuery.neoadjuvantInfo != null">
-            <if test="searchQuery.neoadjuvantInfo.neoadjTherapy != null">
+            <if test="searchQuery.neoadjuvantInfo.neoadjTherapy != null and searchQuery.neoadjuvantInfo.neoadjTherapy != ''">
                 AND n.neoadj_therapy = #{searchQuery.neoadjuvantInfo.neoadjTherapy}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.clinResearch != null">
+            <if test="searchQuery.neoadjuvantInfo.clinResearch != null and searchQuery.neoadjuvantInfo.clinResearch != ''">
                 AND n.clin_research = #{searchQuery.neoadjuvantInfo.clinResearch}
             </if>
             <if test="searchQuery.neoadjuvantInfo.researchDetails != null and searchQuery.neoadjuvantInfo.researchDetails != ''">
@@ -320,78 +320,78 @@
             <if test="searchQuery.neoadjuvantInfo.therapyPlan != null and searchQuery.neoadjuvantInfo.therapyPlan != ''">
                 AND n.therapy_plan LIKE CONCAT('%', #{searchQuery.neoadjuvantInfo.therapyPlan}, '%')
             </if>
-            <if test="searchQuery.neoadjuvantInfo.immunotherapy != null">
+            <if test="searchQuery.neoadjuvantInfo.immunotherapy != null and searchQuery.neoadjuvantInfo.immunotherapy != ''">
                 AND n.immunotherapy = #{searchQuery.neoadjuvantInfo.immunotherapy}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week1Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week1Size != null and searchQuery.neoadjuvantInfo.week1Size != ''">
                 AND n.week_1_size = #{searchQuery.neoadjuvantInfo.week1Size}
             </if>
             <!-- 添加 week2Size 到 week8Size 的条件 -->
-            <if test="searchQuery.neoadjuvantInfo.week2Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week2Size != null and searchQuery.neoadjuvantInfo.week2Size != ''">
                 AND n.week_2_size = #{searchQuery.neoadjuvantInfo.week2Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week3Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week3Size != null and searchQuery.neoadjuvantInfo.week3Size != ''">
                 AND n.week_3_size = #{searchQuery.neoadjuvantInfo.week3Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week4Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week4Size != null and searchQuery.neoadjuvantInfo.week4Size != ''">
                 AND n.week_4_size = #{searchQuery.neoadjuvantInfo.week4Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week5Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week5Size != null and searchQuery.neoadjuvantInfo.week5Size != ''">
                 AND n.week_5_size = #{searchQuery.neoadjuvantInfo.week5Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week6Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week6Size != null and searchQuery.neoadjuvantInfo.week6Size != ''">
                 AND n.week_6_size = #{searchQuery.neoadjuvantInfo.week6Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week7Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week7Size != null and searchQuery.neoadjuvantInfo.week7Size != ''">
                 AND n.week_7_size = #{searchQuery.neoadjuvantInfo.week7Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week8Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week8Size != null and searchQuery.neoadjuvantInfo.week8Size != ''">
                 AND n.week_8_size = #{searchQuery.neoadjuvantInfo.week8Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week23Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week23Size != null and searchQuery.neoadjuvantInfo.week23Size != ''">
                 AND n.week_2_3_size = #{searchQuery.neoadjuvantInfo.week23Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week45Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week45Size != null and searchQuery.neoadjuvantInfo.week45Size != ''">
                 AND n.week_4_5_size = #{searchQuery.neoadjuvantInfo.week45Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.week67Size != null">
+            <if test="searchQuery.neoadjuvantInfo.week67Size != null and searchQuery.neoadjuvantInfo.week67Size != ''">
                 AND n.week_6_7_size = #{searchQuery.neoadjuvantInfo.week67Size}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.doseAdjust != null">
+            <if test="searchQuery.neoadjuvantInfo.doseAdjust != null and searchQuery.neoadjuvantInfo.doseAdjust != ''">
                 AND n.dose_adjust = #{searchQuery.neoadjuvantInfo.doseAdjust}
             </if>
             <if test="searchQuery.neoadjuvantInfo.adjustReason != null and searchQuery.neoadjuvantInfo.adjustReason != ''">
                 AND n.adjust_reason LIKE CONCAT('%', #{searchQuery.neoadjuvantInfo.adjustReason}, '%')
             </if>
-            <if test="searchQuery.neoadjuvantInfo.therapyTerm != null">
+            <if test="searchQuery.neoadjuvantInfo.therapyTerm != null and searchQuery.neoadjuvantInfo.therapyTerm != ''">
                 AND n.therapy_term = #{searchQuery.neoadjuvantInfo.therapyTerm}
             </if>
             <if test="searchQuery.neoadjuvantInfo.termReason != null and searchQuery.neoadjuvantInfo.termReason != ''">
                 AND n.term_reason LIKE CONCAT('%', #{searchQuery.neoadjuvantInfo.termReason}, '%')
             </if>
-            <if test="searchQuery.neoadjuvantInfo.gcsf != null">
+            <if test="searchQuery.neoadjuvantInfo.gcsf != null and searchQuery.neoadjuvantInfo.gcsf != ''">
                 AND n.gcsf = #{searchQuery.neoadjuvantInfo.gcsf}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.longGcsf != null">
+            <if test="searchQuery.neoadjuvantInfo.longGcsf != null and searchQuery.neoadjuvantInfo.longGcsf != ''">
                 AND n.long_gcsf = #{searchQuery.neoadjuvantInfo.longGcsf}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.inputStatus != null">
+            <if test="searchQuery.neoadjuvantInfo.inputStatus != null and searchQuery.neoadjuvantInfo.inputStatus != ''">
                 AND n.input_status = #{searchQuery.neoadjuvantInfo.inputStatus}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.isEnable != null">
+            <if test="searchQuery.neoadjuvantInfo.isEnable != null and searchQuery.neoadjuvantInfo.isEnable != ''">
                 AND n.is_enable = #{searchQuery.neoadjuvantInfo.isEnable}
             </if>
-            <if test="searchQuery.neoadjuvantInfo.isDel != null">
+            <if test="searchQuery.neoadjuvantInfo.isDel != null and searchQuery.neoadjuvantInfo.isDel != ''">
                 AND n.is_del = #{searchQuery.neoadjuvantInfo.isDel}
             </if>
         </if>
 
         <!-- RadiationInfo 条件 -->
         <if test="searchQuery.radiationInfo != null">
-            <if test="searchQuery.radiationInfo.radiationTreatment != null">
+            <if test="searchQuery.radiationInfo.radiationTreatment != null and searchQuery.radiationInfo.radiationTreatment != ''">
                 AND r.radiation_treatment = #{searchQuery.radiationInfo.radiationTreatment}
             </if>
-            <if test="searchQuery.radiationInfo.clinicalResearch != null">
+            <if test="searchQuery.radiationInfo.clinicalResearch != null and searchQuery.radiationInfo.clinicalResearch != ''">
                 AND r.clinical_research = #{searchQuery.radiationInfo.clinicalResearch}
             </if>
             <if test="searchQuery.radiationInfo.clinicalResearchDetails != null and searchQuery.radiationInfo.clinicalResearchDetails != ''">
@@ -403,126 +403,126 @@
             <if test="searchQuery.radiationInfo.treatmentLocation != null and searchQuery.radiationInfo.treatmentLocation != ''">
                 AND r.treatment_location LIKE CONCAT('%', #{searchQuery.radiationInfo.treatmentLocation}, '%')
             </if>
-            <if test="searchQuery.radiationInfo.inputStatus != null">
+            <if test="searchQuery.radiationInfo.inputStatus != null and searchQuery.radiationInfo.inputStatus != ''">
                 AND r.input_status = #{searchQuery.radiationInfo.inputStatus}
             </if>
-            <if test="searchQuery.radiationInfo.isEnable != null">
+            <if test="searchQuery.radiationInfo.isEnable != null and searchQuery.radiationInfo.isEnable != ''">
                 AND r.is_enable = #{searchQuery.radiationInfo.isEnable}
             </if>
-            <if test="searchQuery.radiationInfo.isDel != null">
+            <if test="searchQuery.radiationInfo.isDel != null and searchQuery.radiationInfo.isDel != ''">
                 AND r.is_del = #{searchQuery.radiationInfo.isDel}
             </if>
         </if>
 
         <!-- SurgicalInfo 条件 -->
         <if test="searchQuery.surgicalInfo != null">
-            <if test="searchQuery.surgicalInfo.surgeryTime != null">
+            <if test="searchQuery.surgicalInfo.surgeryTime != null and searchQuery.surgicalInfo.surgeryTime != ''">
                 AND s.surgery_time = #{searchQuery.surgicalInfo.surgeryTime}
             </if>
             <if test="searchQuery.surgicalInfo.surgicalSite != null and searchQuery.surgicalInfo.surgicalSite != ''">
                 AND s.surgical_site = #{searchQuery.surgicalInfo.surgicalSite}
             </if>
-            <if test="searchQuery.surgicalInfo.isTotalPartial != null">
+            <if test="searchQuery.surgicalInfo.isTotalPartial != null and searchQuery.surgicalInfo.isTotalPartial != ''">
                 AND s.is_total_partial = #{searchQuery.surgicalInfo.isTotalPartial}
             </if>
-            <if test="searchQuery.surgicalInfo.isBreastConserve != null">
+            <if test="searchQuery.surgicalInfo.isBreastConserve != null and searchQuery.surgicalInfo.isBreastConserve != ''">
                 AND s.is_breast_conserve = #{searchQuery.surgicalInfo.isBreastConserve}
             </if>
-            <if test="searchQuery.surgicalInfo.isNippleSpare != null">
+            <if test="searchQuery.surgicalInfo.isNippleSpare != null and searchQuery.surgicalInfo.isNippleSpare != ''">
                 AND s.is_nipple_spare = #{searchQuery.surgicalInfo.isNippleSpare}
             </if>
-            <if test="searchQuery.surgicalInfo.isEndoscopic != null">
+            <if test="searchQuery.surgicalInfo.isEndoscopic != null and searchQuery.surgicalInfo.isEndoscopic != ''">
                 AND s.is_endoscopic = #{searchQuery.surgicalInfo.isEndoscopic}
             </if>
-            <if test="searchQuery.surgicalInfo.isReconstruction != null">
+            <if test="searchQuery.surgicalInfo.isReconstruction != null and searchQuery.surgicalInfo.isReconstruction != ''">
                 AND s.is_reconstruction = #{searchQuery.surgicalInfo.isReconstruction}
             </if>
             <if test="searchQuery.surgicalInfo.reconMethod != null and searchQuery.surgicalInfo.reconMethod != ''">
                 AND s.recon_method LIKE CONCAT('%', #{searchQuery.surgicalInfo.reconMethod}, '%')
             </if>
-            <if test="searchQuery.surgicalInfo.tumorSizeCm != null">
+            <if test="searchQuery.surgicalInfo.tumorSizeCm != null and searchQuery.surgicalInfo.tumorSizeCm != ''">
                 AND s.tumor_size_cm = #{searchQuery.surgicalInfo.tumorSizeCm}
             </if>
-            <if test="searchQuery.surgicalInfo.hasLymphInvasion != null">
+            <if test="searchQuery.surgicalInfo.hasLymphInvasion != null and searchQuery.surgicalInfo.hasLymphInvasion != ''">
                 AND s.has_lymph_invasion = #{searchQuery.surgicalInfo.hasLymphInvasion}
             </if>
-            <if test="searchQuery.surgicalInfo.hasNerveInvasion != null">
+            <if test="searchQuery.surgicalInfo.hasNerveInvasion != null and searchQuery.surgicalInfo.hasNerveInvasion != ''">
                 AND s.has_nerve_invasion = #{searchQuery.surgicalInfo.hasNerveInvasion}
             </if>
             <if test="searchQuery.surgicalInfo.postopPathGrade != null and searchQuery.surgicalInfo.postopPathGrade != ''">
                 AND s.postop_path_grade = #{searchQuery.surgicalInfo.postopPathGrade}
             </if>
-            <if test="searchQuery.surgicalInfo.isMultifocal != null">
+            <if test="searchQuery.surgicalInfo.isMultifocal != null and searchQuery.surgicalInfo.isMultifocal != ''">
                 AND s.is_multifocal = #{searchQuery.surgicalInfo.isMultifocal}
             </if>
             <if test="searchQuery.surgicalInfo.tumorLocation != null and searchQuery.surgicalInfo.tumorLocation != ''">
                 AND s.tumor_location = #{searchQuery.surgicalInfo.tumorLocation}
             </if>
-            <if test="searchQuery.surgicalInfo.hasSlnBiopsy != null">
+            <if test="searchQuery.surgicalInfo.hasSlnBiopsy != null and searchQuery.surgicalInfo.hasSlnBiopsy != ''">
                 AND s.has_sln_biopsy = #{searchQuery.surgicalInfo.hasSlnBiopsy}
             </if>
-            <if test="searchQuery.surgicalInfo.useNs != null">
+            <if test="searchQuery.surgicalInfo.useNs != null and searchQuery.surgicalInfo.useNs != ''">
                 AND s.use_ns = #{searchQuery.surgicalInfo.useNs}
             </if>
-            <if test="searchQuery.surgicalInfo.preTad != null">
+            <if test="searchQuery.surgicalInfo.preTad != null and searchQuery.surgicalInfo.preTad != ''">
                 AND s.pre_tad = #{searchQuery.surgicalInfo.preTad}
             </if>
-            <if test="searchQuery.surgicalInfo.slnCount != null">
+            <if test="searchQuery.surgicalInfo.slnCount != null and searchQuery.surgicalInfo.slnCount != ''">
                 AND s.sln_count = #{searchQuery.surgicalInfo.slnCount}
             </if>
-            <if test="searchQuery.surgicalInfo.slnMeta != null">
+            <if test="searchQuery.surgicalInfo.slnMeta != null and searchQuery.surgicalInfo.slnMeta != ''">
                 AND s.sln_meta = #{searchQuery.surgicalInfo.slnMeta}
             </if>
-            <if test="searchQuery.surgicalInfo.slnMetaCount != null">
+            <if test="searchQuery.surgicalInfo.slnMetaCount != null and searchQuery.surgicalInfo.slnMetaCount != ''">
                 AND s.sln_meta_count = #{searchQuery.surgicalInfo.slnMetaCount}
             </if>
-            <if test="searchQuery.surgicalInfo.slnMicroMetaCount != null">
+            <if test="searchQuery.surgicalInfo.slnMicroMetaCount != null and searchQuery.surgicalInfo.slnMicroMetaCount != ''">
                 AND s.sln_micro_meta_count = #{searchQuery.surgicalInfo.slnMicroMetaCount}
             </if>
-            <if test="searchQuery.surgicalInfo.slnItcCount != null">
+            <if test="searchQuery.surgicalInfo.slnItcCount != null and searchQuery.surgicalInfo.slnItcCount != ''">
                 AND s.sln_itc_count = #{searchQuery.surgicalInfo.slnItcCount}
             </if>
-            <if test="searchQuery.surgicalInfo.ald != null">
+            <if test="searchQuery.surgicalInfo.ald != null and searchQuery.surgicalInfo.ald != ''">
                 AND s.ald = #{searchQuery.surgicalInfo.ald}
             </if>
             <if test="searchQuery.surgicalInfo.aldStage != null and searchQuery.surgicalInfo.aldStage != ''">
                 AND s.ald_stage = #{searchQuery.surgicalInfo.aldStage}
             </if>
-            <if test="searchQuery.surgicalInfo.aldCount != null">
+            <if test="searchQuery.surgicalInfo.aldCount != null and searchQuery.surgicalInfo.aldCount != ''">
                 AND s.ald_count = #{searchQuery.surgicalInfo.aldCount}
             </if>
-            <if test="searchQuery.surgicalInfo.aldMetaCount != null">
+            <if test="searchQuery.surgicalInfo.aldMetaCount != null and searchQuery.surgicalInfo.aldMetaCount != ''">
                 AND s.ald_meta_count = #{searchQuery.surgicalInfo.aldMetaCount}
             </if>
-            <if test="searchQuery.surgicalInfo.aldMicroMetaCount != null">
+            <if test="searchQuery.surgicalInfo.aldMicroMetaCount != null and searchQuery.surgicalInfo.aldMicroMetaCount != ''">
                 AND s.ald_micro_meta_count = #{searchQuery.surgicalInfo.aldMicroMetaCount}
             </if>
-            <if test="searchQuery.surgicalInfo.aldItcCount != null">
+            <if test="searchQuery.surgicalInfo.aldItcCount != null and searchQuery.surgicalInfo.aldItcCount != ''">
                 AND s.ald_itc_count = #{searchQuery.surgicalInfo.aldItcCount}
             </if>
-            <if test="searchQuery.surgicalInfo.apexMeta != null">
+            <if test="searchQuery.surgicalInfo.apexMeta != null and searchQuery.surgicalInfo.apexMeta != ''">
                 AND s.apex_meta = #{searchQuery.surgicalInfo.apexMeta}
             </if>
-            <if test="searchQuery.surgicalInfo.imMeta != null">
+            <if test="searchQuery.surgicalInfo.imMeta != null and searchQuery.surgicalInfo.imMeta != ''">
                 AND s.im_meta = #{searchQuery.surgicalInfo.imMeta}
             </if>
             <!-- 免疫组化结果 -->
-            <if test="searchQuery.surgicalInfo.ihcResult != null">
+            <if test="searchQuery.surgicalInfo.ihcResult != null and searchQuery.surgicalInfo.ihcResult != ''">
                 AND s.ihc_result = #{searchQuery.surgicalInfo.ihcResult}
             </if>
-            <if test="searchQuery.surgicalInfo.erPct != null">
+            <if test="searchQuery.surgicalInfo.erPct != null and searchQuery.surgicalInfo.erPct != ''">
                 AND s.er_pct = #{searchQuery.surgicalInfo.erPct}
             </if>
-            <if test="searchQuery.surgicalInfo.prPct != null">
+            <if test="searchQuery.surgicalInfo.prPct != null and searchQuery.surgicalInfo.prPct != ''">
                 AND s.pr_pct = #{searchQuery.surgicalInfo.prPct}
             </if>
             <if test="searchQuery.surgicalInfo.her2 != null and searchQuery.surgicalInfo.her2 != ''">
                 AND s.her2 = #{searchQuery.surgicalInfo.her2}
             </if>
-            <if test="searchQuery.surgicalInfo.ki67Pct != null">
+            <if test="searchQuery.surgicalInfo.ki67Pct != null and searchQuery.surgicalInfo.ki67Pct != ''">
                 AND s.ki67_pct = #{searchQuery.surgicalInfo.ki67Pct}
             </if>
-            <if test="searchQuery.surgicalInfo.arPct != null">
+            <if test="searchQuery.surgicalInfo.arPct != null and searchQuery.surgicalInfo.arPct != ''">
                 AND s.ar_pct = #{searchQuery.surgicalInfo.arPct}
             </if>
             <if test="searchQuery.surgicalInfo.fishTest != null and searchQuery.surgicalInfo.fishTest != ''">
@@ -578,23 +578,23 @@
                 AND s.egfr = #{searchQuery.surgicalInfo.egfr}
             </if>
             <!-- 录入信息 -->
-            <if test="searchQuery.surgicalInfo.inputStatus != null">
+            <if test="searchQuery.surgicalInfo.inputStatus != null and searchQuery.surgicalInfo.inputStatus != ''">
                 AND s.input_status = #{searchQuery.surgicalInfo.inputStatus}
             </if>
-            <if test="searchQuery.surgicalInfo.isEnable != null">
+            <if test="searchQuery.surgicalInfo.isEnable != null and searchQuery.surgicalInfo.isEnable != ''">
                 AND s.is_enable = #{searchQuery.surgicalInfo.isEnable}
             </if>
-            <if test="searchQuery.surgicalInfo.isDel != null">
+            <if test="searchQuery.surgicalInfo.isDel != null and searchQuery.surgicalInfo.isDel != ''">
                 AND s.is_del = #{searchQuery.surgicalInfo.isDel}
             </if>
         </if>
 
         <!-- AdjuvantInfo 条件 -->
         <if test="searchQuery.adjuvantInfo != null">
-            <if test="searchQuery.adjuvantInfo.adjuvantTherapy != null">
+            <if test="searchQuery.adjuvantInfo.adjuvantTherapy != null and searchQuery.adjuvantInfo.adjuvantTherapy != ''">
                 AND a.adjuvant_therapy = #{searchQuery.adjuvantInfo.adjuvantTherapy}
             </if>
-            <if test="searchQuery.adjuvantInfo.clinicalResearch != null">
+            <if test="searchQuery.adjuvantInfo.clinicalResearch != null and searchQuery.adjuvantInfo.clinicalResearch != ''">
                 AND a.clinical_research = #{searchQuery.adjuvantInfo.clinicalResearch}
             </if>
             <if test="searchQuery.adjuvantInfo.researchDetails != null and searchQuery.adjuvantInfo.researchDetails != ''">
@@ -603,41 +603,41 @@
             <if test="searchQuery.adjuvantInfo.therapyPlan != null and searchQuery.adjuvantInfo.therapyPlan != ''">
                 AND a.therapy_plan LIKE CONCAT('%', #{searchQuery.adjuvantInfo.therapyPlan}, '%')
             </if>
-            <if test="searchQuery.adjuvantInfo.intensifiedTherapy != null">
+            <if test="searchQuery.adjuvantInfo.intensifiedTherapy != null and searchQuery.adjuvantInfo.intensifiedTherapy != ''">
                 AND a.intensified_therapy = #{searchQuery.adjuvantInfo.intensifiedTherapy}
             </if>
             <if test="searchQuery.adjuvantInfo.intensifiedPlan != null and searchQuery.adjuvantInfo.intensifiedPlan != ''">
                 AND a.intensified_plan LIKE CONCAT('%', #{searchQuery.adjuvantInfo.intensifiedPlan}, '%')
             </if>
-            <if test="searchQuery.adjuvantInfo.doseAdjustment != null">
+            <if test="searchQuery.adjuvantInfo.doseAdjustment != null and searchQuery.adjuvantInfo.doseAdjustment != ''">
                 AND a.dose_adjustment = #{searchQuery.adjuvantInfo.doseAdjustment}
             </if>
             <if test="searchQuery.adjuvantInfo.adjustmentReason != null and searchQuery.adjuvantInfo.adjustmentReason != ''">
                 AND a.adjustment_reason LIKE CONCAT('%', #{searchQuery.adjuvantInfo.adjustmentReason}, '%')
             </if>
-            <if test="searchQuery.adjuvantInfo.therapyTermination != null">
+            <if test="searchQuery.adjuvantInfo.therapyTermination != null and searchQuery.adjuvantInfo.therapyTermination != ''">
                 AND a.therapy_termination = #{searchQuery.adjuvantInfo.therapyTermination}
             </if>
             <if test="searchQuery.adjuvantInfo.terminationReason != null and searchQuery.adjuvantInfo.terminationReason != ''">
                 AND a.termination_reason LIKE CONCAT('%', #{searchQuery.adjuvantInfo.terminationReason}, '%')
             </if>
-            <if test="searchQuery.adjuvantInfo.inputStatus != null">
+            <if test="searchQuery.adjuvantInfo.inputStatus != null and searchQuery.adjuvantInfo.inputStatus != ''">
                 AND a.input_status = #{searchQuery.adjuvantInfo.inputStatus}
             </if>
-            <if test="searchQuery.adjuvantInfo.isEnable != null">
+            <if test="searchQuery.adjuvantInfo.isEnable != null and searchQuery.adjuvantInfo.isEnable != ''">
                 AND a.is_enable = #{searchQuery.adjuvantInfo.isEnable}
             </if>
-            <if test="searchQuery.adjuvantInfo.isDel != null">
+            <if test="searchQuery.adjuvantInfo.isDel != null and searchQuery.adjuvantInfo.isDel != ''">
                 AND a.is_del = #{searchQuery.adjuvantInfo.isDel}
             </if>
         </if>
 
         <!-- EndocrineInfo 条件 -->
         <if test="searchQuery.endocrineInfo != null">
-            <if test="searchQuery.endocrineInfo.endocrineTreatment != null">
+            <if test="searchQuery.endocrineInfo.endocrineTreatment != null and searchQuery.endocrineInfo.endocrineTreatment != ''">
                 AND e.endocrine_treatment = #{searchQuery.endocrineInfo.endocrineTreatment}
             </if>
-            <if test="searchQuery.endocrineInfo.clinicalResearch != null">
+            <if test="searchQuery.endocrineInfo.clinicalResearch != null and searchQuery.endocrineInfo.clinicalResearch != ''">
                 AND e.clinical_research = #{searchQuery.endocrineInfo.clinicalResearch}
             </if>
             <if test="searchQuery.endocrineInfo.clinicalResearchDetails != null and searchQuery.endocrineInfo.clinicalResearchDetails != ''">
@@ -646,31 +646,31 @@
             <if test="searchQuery.endocrineInfo.treatmentPlan != null and searchQuery.endocrineInfo.treatmentPlan != ''">
                 AND e.treatment_plan LIKE CONCAT('%', #{searchQuery.endocrineInfo.treatmentPlan}, '%')
             </if>
-            <if test="searchQuery.endocrineInfo.enhancedTreatment != null">
+            <if test="searchQuery.endocrineInfo.enhancedTreatment != null and searchQuery.endocrineInfo.enhancedTreatment != ''">
                 AND e.enhanced_treatment = #{searchQuery.endocrineInfo.enhancedTreatment}
             </if>
             <if test="searchQuery.endocrineInfo.enhancedPlan != null and searchQuery.endocrineInfo.enhancedPlan != ''">
                 AND e.enhanced_plan LIKE CONCAT('%', #{searchQuery.endocrineInfo.enhancedPlan}, '%')
             </if>
-            <if test="searchQuery.endocrineInfo.dosageAdjustment != null">
+            <if test="searchQuery.endocrineInfo.dosageAdjustment != null and searchQuery.endocrineInfo.dosageAdjustment != ''">
                 AND e.dosage_adjustment = #{searchQuery.endocrineInfo.dosageAdjustment}
             </if>
             <if test="searchQuery.endocrineInfo.adjustmentReason != null and searchQuery.endocrineInfo.adjustmentReason != ''">
                 AND e.adjustment_reason LIKE CONCAT('%', #{searchQuery.endocrineInfo.adjustmentReason}, '%')
             </if>
-            <if test="searchQuery.endocrineInfo.medicationAdjustment != null">
+            <if test="searchQuery.endocrineInfo.medicationAdjustment != null and searchQuery.endocrineInfo.medicationAdjustment != ''">
                 AND e.medication_adjustment = #{searchQuery.endocrineInfo.medicationAdjustment}
             </if>
             <if test="searchQuery.endocrineInfo.medAdjustReason != null and searchQuery.endocrineInfo.medAdjustReason != ''">
                 AND e.med_adjust_reason LIKE CONCAT('%', #{searchQuery.endocrineInfo.medAdjustReason}, '%')
             </if>
-            <if test="searchQuery.endocrineInfo.inputStatus != null">
+            <if test="searchQuery.endocrineInfo.inputStatus != null and searchQuery.endocrineInfo.inputStatus != ''">
                 AND e.input_status = #{searchQuery.endocrineInfo.inputStatus}
             </if>
-            <if test="searchQuery.endocrineInfo.isEnable != null">
+            <if test="searchQuery.endocrineInfo.isEnable != null and searchQuery.endocrineInfo.isEnable != ''">
                 AND e.is_enable = #{searchQuery.endocrineInfo.isEnable}
             </if>
-            <if test="searchQuery.endocrineInfo.isDel != null">
+            <if test="searchQuery.endocrineInfo.isDel != null and searchQuery.endocrineInfo.isDel != ''">
                 AND e.is_del = #{searchQuery.endocrineInfo.isDel}
             </if>
         </if>
