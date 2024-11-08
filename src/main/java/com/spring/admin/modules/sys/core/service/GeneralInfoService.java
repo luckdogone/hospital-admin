@@ -87,8 +87,9 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
      */
     public LocalDate parseSurgicalNumForDate(String surgicalNum) {
         // 验证手术编号长度
-        if (surgicalNum == null || surgicalNum.length() < 9) {
-            throw new IllegalArgumentException("手术编号格式不正确");
+        if (surgicalNum == null || !surgicalNum.matches("A\\d{8}\\d{2}")) {
+//            throw new IllegalArgumentException("手术编号格式不正确");
+            return null;
         }
 
         // 提取日期部分 (例如 "20240520")
@@ -99,7 +100,8 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
             return LocalDate.parse(datePart, formatter);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("手术编号中的日期格式不正确", e);
+//            throw new IllegalArgumentException("手术编号中的日期格式不正确", e);
+            return null;
         }
     }
 
@@ -146,12 +148,18 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
         // 获取手术编号
         String surgicalNum = generalInfo.getSurgicalNum();
 
+//        // 解析手术日期
+//        LocalDate surgeryDate;
+//        try {
+//            surgeryDate = parseSurgicalNumForDate(surgicalNum);  // 使用解析函数获取手术日期
+//        } catch (IllegalArgumentException e) {
+//            System.out.println("保存失败，手术日期编号格式不正确");
+//            // 如果解析失败，返回错误信息
+//            return R.NG("保存失败，手术日期编号格式不正确");
+//        }
         // 解析手术日期
-        LocalDate surgeryDate;
-        try {
-            surgeryDate = parseSurgicalNumForDate(surgicalNum);  // 使用解析函数获取手术日期
-        } catch (IllegalArgumentException e) {
-            System.out.println("保存失败，手术日期编号格式不正确");
+        LocalDate surgeryDate = parseSurgicalNumForDate(surgicalNum);  // 使用解析函数获取手术日期
+        if (surgeryDate == null) {
             // 如果解析失败，返回错误信息
             return R.NG("保存失败，手术日期编号格式不正确");
         }
