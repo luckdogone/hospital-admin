@@ -198,7 +198,7 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
         // 检查录入状态
 //        String followUpStatus = followUpRecord.getFollowUpStatus();
 
-        // 如果录入状态是1 (录入中)，则修改为2 (已录入)
+        // 如果录入状态是1 (待随访)，则修改为2 (已录入)
         if (followUpRecord.getFollowUpStatus().equals("待随访")) {
             // 更新当前随访记录
             BeanUtil.copyProperties(followUpRecordVO, followUpRecord, "id", "patientId");
@@ -207,28 +207,28 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
             followUpRecord.setFollowUpStatus("已完成");
             updateById(followUpRecord);
 
-            // 计算下次随访日期并生成新的随访记录
-//            Date nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()), followUpRecordVO);
+            // 检查是否需要生成下一次随访记录
+            if (followUpRecordVO.getDeceased() == null || followUpRecordVO.getDeceased() != 1) {
+                // 计算下次随访日期并生成新的随访记录
+                LocalDate nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), followUpRecordVO.getFollowUpDate(), followUpRecordVO);
 
-            LocalDate nextFollowUpDate = calculateNextFollowUpDate(followUpRecordVO.getSurgeryDate(), followUpRecordVO.getFollowUpDate(), followUpRecordVO);
+                // 使用 ChronoUnit 计算手术日期和下次随访日期之间的月份差
+                long diffInMonths = ChronoUnit.MONTHS.between(followUpRecordVO.getSurgeryDate(), nextFollowUpDate);
 
-            // 使用 ChronoUnit 计算手术日期和下次随访日期之间的月份差
-            long diffInMonths = ChronoUnit.MONTHS.between(followUpRecordVO.getSurgeryDate(), nextFollowUpDate);
-
-            // 创建新的 FollowUpRecord 对象
-            FollowUpRecord newRecord = new FollowUpRecord();
-            // 将时间差(以月为单位)存储在 afterSurgeryDate 属性中
-            newRecord.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
-            newRecord.setPatientId(followUpRecordVO.getPatientId());
-            newRecord.setFollowUpDate(nextFollowUpDate);
-            newRecord.setFollowUpStatus("等待中");
-            newRecord.setModifiedBy(SecurityUtil.getCurrentUsername());
-            newRecord.setModified(LocalDateTime.now());
-            newRecord.setInputStatus(0);
-            newRecord.setIsEnable(1);
-            newRecord.setIsDel(1);
-            save(newRecord);
-
+                // 创建新的 FollowUpRecord 对象
+                FollowUpRecord newRecord = new FollowUpRecord();
+                // 将时间差(以月为单位)存储在 afterSurgeryDate 属性中
+                newRecord.setAfterSurgeryDate(Math.toIntExact(diffInMonths));
+                newRecord.setPatientId(followUpRecordVO.getPatientId());
+                newRecord.setFollowUpDate(nextFollowUpDate);
+                newRecord.setFollowUpStatus("等待中");
+                newRecord.setModifiedBy(SecurityUtil.getCurrentUsername());
+                newRecord.setModified(LocalDateTime.now());
+                newRecord.setInputStatus(0);
+                newRecord.setIsEnable(1);
+                newRecord.setIsDel(1);
+                save(newRecord);
+            }
         } else {
             BeanUtil.copyProperties(followUpRecordVO, followUpRecord, "id", "patientId");
             updateById(followUpRecord);
