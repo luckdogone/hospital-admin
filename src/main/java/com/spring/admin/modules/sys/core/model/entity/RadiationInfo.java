@@ -51,6 +51,36 @@ public class RadiationInfo extends BaseEntity {
     @Schema(description = "放疗部位")
     private String treatmentLocation;
 
+    @Schema(description = "放射范围")
+    private Integer radiationRange;
+
+    @Schema(description = "胸壁")
+    private Integer chestWall;
+
+    @Schema(description = "锁骨上")
+    private Integer supraclavicular;
+
+    @Schema(description = "腋窝")
+    private Integer armpit;
+
+    @Schema(description = "乳房")
+    private Integer breast;
+
+    @Schema(description = "合并药物")
+    private String mergeDrugs;
+
+    @Schema(description = "放疗次数")
+    private Integer radiationNumber;
+
+    @Schema(description = "分割剂量")
+    private String splitDose;
+
+    @Schema(description = "总剂量")
+    private String totalDose;
+
+    @Schema(description = "急性放射性皮肤反应")
+    private String radiationInducedReaction;
+
     /**
      * 录入状态 (0: 未录入, 1: 录入中, 2: 已录入)
      */

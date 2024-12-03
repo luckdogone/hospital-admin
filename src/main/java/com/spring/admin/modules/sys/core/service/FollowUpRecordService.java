@@ -138,7 +138,6 @@ public class FollowUpRecordService extends BaseServiceImpl<FollowUpRecordMapper,
         followUpRecordVO.setSurgeryDate(surgeryDate);
 
         // 设置其他随访记录的属性
-        followUpRecordVO.setFollowUpStatus("等待中");
         followUpRecordVO.setSurgicalNum(generalInfo.getSurgicalNum());
         followUpRecordVO.setCreatedBy(SecurityUtil.getCurrentUsername());
         followUpRecordVO.setCreated(LocalDateTime.now());

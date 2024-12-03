@@ -78,6 +78,39 @@ public class FollowUpRecord extends BaseEntity {
     @Schema(description = "X月复查全身骨显像异常结果")
     private String boneScanAbnormalResult;
 
+    @Schema(description = "是否进行放射治疗")
+    private Integer radiationTreatment;
+
+    @Schema(description = "放射范围")
+    private Integer radiationRange;
+
+    @Schema(description = "胸壁")
+    private Integer chestWall;
+
+    @Schema(description = "锁骨上")
+    private Integer supraclavicular;
+
+    @Schema(description = "腋窝")
+    private Integer armpit;
+
+    @Schema(description = "乳房")
+    private Integer breast;
+
+    @Schema(description = "合并药物")
+    private String mergeDrugs;
+
+    @Schema(description = "放疗次数")
+    private Integer radiationNumber;
+
+    @Schema(description = "分割剂量")
+    private String splitDose;
+
+    @Schema(description = "总剂量")
+    private String totalDose;
+
+    @Schema(description = "急性放射性皮肤反应")
+    private String radiationInducedReaction;
+
     @Schema(description = "量表评分")
     private Double scaleRating;
 

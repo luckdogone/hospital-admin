@@ -415,6 +415,36 @@
             <if test="searchQuery.radiationInfo.treatmentLocation != null and searchQuery.radiationInfo.treatmentLocation != ''">
                 AND r.treatment_location LIKE CONCAT('%', #{searchQuery.radiationInfo.treatmentLocation}, '%')
             </if>
+            <if test="searchQuery.radiationInfo.radiationRange != null">
+                AND r.radiation_range = #{searchQuery.radiationInfo.radiationRange}
+            </if>
+            <if test="searchQuery.radiationInfo.chestWall != null">
+                AND r.chest_wall = #{searchQuery.radiationInfo.chestWall}
+            </if>
+            <if test="searchQuery.radiationInfo.supraclavicular != null">
+                AND r.supraclavicular = #{searchQuery.radiationInfo.supraclavicular}
+            </if>
+            <if test="searchQuery.radiationInfo.armpit != null">
+                AND r.armpit = #{searchQuery.radiationInfo.armpit}
+            </if>
+            <if test="searchQuery.radiationInfo.breast != null">
+                AND r.breast = #{searchQuery.radiationInfo.breast}
+            </if>
+            <if test="searchQuery.radiationInfo.mergeDrugs != null and searchQuery.radiationInfo.mergeDrugs != ''">
+                AND r.merge_drugs LIKE CONCAT('%', #{searchQuery.radiationInfo.mergeDrugs}, '%')
+            </if>
+            <if test="searchQuery.radiationInfo.radiationNumber != null">
+                AND r.radiation_number = #{searchQuery.radiationInfo.radiationNumber}
+            </if>
+            <if test="searchQuery.radiationInfo.splitDose != null and searchQuery.radiationInfo.splitDose != ''">
+                AND r.split_dose LIKE CONCAT('%', #{searchQuery.radiationInfo.splitDose}, '%')
+            </if>
+            <if test="searchQuery.radiationInfo.totalDose != null and searchQuery.radiationInfo.totalDose != ''">
+                AND r.total_dose LIKE CONCAT('%', #{searchQuery.radiationInfo.totalDose}, '%')
+            </if>
+            <if test="searchQuery.radiationInfo.radiationInducedReaction != null and searchQuery.radiationInfo.radiationInducedReaction != ''">
+                AND r.radiation_induced_reaction LIKE CONCAT('%', #{searchQuery.radiationInfo.radiationInducedReaction}, '%')
+            </if>
             <if test="searchQuery.radiationInfo.inputStatus != null">
                 AND r.input_status = #{searchQuery.radiationInfo.inputStatus}
             </if>
@@ -428,7 +458,7 @@
 
         <!-- SurgicalInfo 条件 -->
         <if test="searchQuery.surgicalInfo != null">
-            <if test="searchQuery.surgicalInfo.surgeryTime != null and searchQuery.surgicalInfo.surgeryTime != ''">
+            <if test="searchQuery.surgicalInfo.surgeryTime != null">
                 AND s.surgery_time = #{searchQuery.surgicalInfo.surgeryTime}
             </if>
             <if test="searchQuery.surgicalInfo.surgicalSite != null and searchQuery.surgicalInfo.surgicalSite != ''">
