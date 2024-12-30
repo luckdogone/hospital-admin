@@ -577,6 +577,9 @@
             <if test="searchQuery.surgicalInfo.stage != null and searchQuery.surgicalInfo.stage != ''">
                 AND s.stage = #{searchQuery.surgicalInfo.stage}
             </if>
+            <if test="searchQuery.surgicalInfo.pathologicalResults != null and searchQuery.surgicalInfo.pathologicalResults != ''">
+                AND s.pathological_results LIKE CONCAT('%', #{searchQuery.surgicalInfo.pathologicalResults}, '%')
+            </if>
             <!-- 亚型分型 -->
             <if test="searchQuery.surgicalInfo.subtype != null and searchQuery.surgicalInfo.subtype != ''">
                 AND s.subtype = #{searchQuery.surgicalInfo.subtype}

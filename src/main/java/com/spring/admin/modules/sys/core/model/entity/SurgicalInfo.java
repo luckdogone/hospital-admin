@@ -153,6 +153,9 @@ public class SurgicalInfo extends BaseEntity {
     @Schema(description = "分期：无/I/II/III")
     private String stage;
 
+    @Schema(description = "术后病理结果")
+    private String pathologicalResults;
+
     // 亚型分型
     @Schema(description = "分型：三阴性/Luminal A/Luminal B HER2阴性型/Luminal B HER2阳性型")
     private String subtype;

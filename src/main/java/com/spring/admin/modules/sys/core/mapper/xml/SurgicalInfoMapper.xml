@@ -44,6 +44,7 @@
         t.fish_test,
         t.tnm,
         t.stage,
+        t.pathological_results,
         t.subtype,
         t.special_type_tumors,
         t.mp_level,
