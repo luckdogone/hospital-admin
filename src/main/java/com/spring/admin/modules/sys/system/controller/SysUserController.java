@@ -102,9 +102,9 @@ public class SysUserController {
     @PreAuthorize("@permission.hashPermission('user:update')")
     public R<UserVO> update(HttpServletRequest request, @PathVariable String id,
                             @Validated @RequestBody UserVO userVO) {
-        userVO.setPassword(null);
-        userVO.setOrgId(null);
-        userVO.setUsername(null);
+//        userVO.setPassword(null);
+//        userVO.setOrgId(null);
+//        userVO.setUsername(null);
         userVO.setModified(LocalDateTime.now());
         userVO.setModifiedBy(SecurityUtil.getCurrentUsername());
         return this.sysUserService.updateById(id, userVO);

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 
- * @date 2023/1/11
+ * @date 2024/5/11
  */
 @Configuration
 @MapperScan(basePackages = "com.spring.admin.**.mapper")

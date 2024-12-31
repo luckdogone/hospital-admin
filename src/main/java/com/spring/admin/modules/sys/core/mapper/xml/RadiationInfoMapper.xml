@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.admin.modules.sys.core.mapper.RadiationInfoMapper">
+    <sql id="Base_radiation">
+        t.id,
+        t.patient_id,
+        t.radiation_treatment,
+        t.clinical_research,
+        t.clinical_research_details,
+        t.treatment_plan,
+        t.treatment_location,
+        t.radiation_range,
+        t.chest_wall,
+        t.supraclavicular,
+        t.armpit,
+        t.breast,
+        t.merge_drugs,
+        t.radiation_number,
+        t.split_dose,
+        t.total_dose,
+        t.radiation_induced_reaction,
+        t.input_status,
+        t.created_by,
+        t.created,
+        t.modified_by,
+        t.modified,
+        t.is_enable,
+        t.is_del
+    </sql>
+    <select id="queryPage" resultType="com.spring.admin.modules.sys.core.model.entity.RadiationInfo">
+        SELECT
+        <include refid="Base_radiation"/>
+        from radiation_info t
+        WHERE 1=1
+        <if test="query.patientId != null and query.patientId != ''">
+            and  t.patient_id = #{query.patientId}
+        </if>
+        <if test="query.inputStatus != null and query.inputStatus != ''">
+            and t.input_status = #{query.inputStatus}
+        </if>
+        <if test="query.isEnable != null">
+            and t.is_enable = #{query.isEnable}
+        </if>
+        <if test="query.isDel != null">
+            and t.is_del = #{query.isDel}
+        </if>
+        order by t.created desc
+    </select>
+
+    <select id="getIdsByPatientId" resultType="java.lang.String">
+        SELECT t.id
+        FROM radiation_info t
+        WHERE t.patient_id = #{patientId}
+        <if test="isDel != null">
+            AND t.is_del = #{isDel}
+        </if>
+    </select>
+
+    <select id="getRelatedInputStatus" resultType="java.lang.Integer">
+        SELECT g.input_status
+        FROM patient_info p
+                 LEFT JOIN general_info g ON p.id = g.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT c.input_status
+        FROM patient_info p
+                 LEFT JOIN case_info c ON p.id = c.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT s.input_status
+        FROM patient_info p
+                 LEFT JOIN surgical_info s ON p.id = s.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT n.input_status
+        FROM patient_info p
+                 LEFT JOIN neoadjuvant_info n ON p.id = n.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT a.input_status
+        FROM patient_info p
+                 LEFT JOIN adjuvant_info a ON p.id = a.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT e.input_status
+        FROM patient_info p
+                 LEFT JOIN endocrine_info e ON p.id = e.patient_id
+        WHERE p.id = #{patientId}
+
+        UNION ALL
+
+        SELECT r.input_status
+        FROM patient_info p
+                 LEFT JOIN radiation_info r ON p.id = r.patient_id
+        WHERE p.id = #{patientId}
+    </select>
+
+    <update id="updatePatientInputStatus">
+        UPDATE patient_info
+        SET input_status = #{inputStatus}
+        WHERE id = #{id}
+    </update>
+</mapper>
