@@ -60,15 +60,33 @@ public class GeneralInfoService extends BaseServiceImpl<GeneralInfoMapper, Gener
     }
 
     /**
-     * 检查code是否重复
+     * 检查SurgicalNum是否重复
      *
      * @param code .
      * @param id   需要排查的ID，可以为空
      * @return .
      */
-    public boolean checkCode(@Nonnull String code, @Nullable String id) {
+    public boolean checkSurgicalNum(@Nonnull String code, @Nullable String id) {
         LambdaQueryWrapper<GeneralInfo> queryWrapper = Wrappers.lambdaQuery(GeneralInfo.class)
                 .eq(GeneralInfo::getSurgicalNum, code)
+                //排除已标记删除的记录
+                .ne(GeneralInfo::getIsDel, 0);
+        if (StrUtil.isNotBlank(id)) {
+            queryWrapper.ne(GeneralInfo::getId, id);
+        }
+        return count(queryWrapper) > 0;
+    }
+
+    /**
+     * 检查CaseNo是否重复
+     *
+     * @param code .
+     * @param id   需要排查的ID，可以为空
+     * @return .
+     */
+    public boolean checkCaseNo(@Nonnull String code, @Nullable String id) {
+        LambdaQueryWrapper<GeneralInfo> queryWrapper = Wrappers.lambdaQuery(GeneralInfo.class)
+                .eq(GeneralInfo::getCaseNo, code)
                 //排除已标记删除的记录
                 .ne(GeneralInfo::getIsDel, 0);
         if (StrUtil.isNotBlank(id)) {

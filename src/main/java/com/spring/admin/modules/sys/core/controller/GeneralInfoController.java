@@ -38,14 +38,25 @@ public class GeneralInfoController {
         return R.OK(res);
     }
 
-    @GetMapping("/check/code")
+    @GetMapping("/check/surgical")
     @Operation(summary = "校验code是否重复", parameters = {
             @Parameter(name = "id", required = false, description = "id"),
             @Parameter(name = "code", required = true, description = "手术编号")
     })
-    public R<Boolean> checkCode(@RequestParam(value = "id", required = false) String id,
+    public R<Boolean> checkSurgicalNum(@RequestParam(value = "id", required = false) String id,
                                 @RequestParam(value = "code") String code) {
-        boolean checkCode = generalInfoService.checkCode(code, id);
+        boolean checkCode = generalInfoService.checkSurgicalNum(code, id);
+        return R.OK(checkCode);
+    }
+
+    @GetMapping("/check/case")
+    @Operation(summary = "校验code是否重复", parameters = {
+            @Parameter(name = "id", required = false, description = "id"),
+            @Parameter(name = "code", required = true, description = "手术编号")
+    })
+    public R<Boolean> checkCaseNo(@RequestParam(value = "id", required = false) String id,
+                                       @RequestParam(value = "code") String code) {
+        boolean checkCode = generalInfoService.checkCaseNo(code, id);
         return R.OK(checkCode);
     }
 

@@ -5,6 +5,7 @@ import com.spring.admin.base.R;
 import com.spring.admin.data.domain.BasePage;
 import com.spring.admin.modules.sys.core.model.entity.*;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
+import com.spring.admin.modules.sys.core.model.vo.PatientInfoVO;
 import com.spring.admin.modules.sys.core.model.vo.SearchQueryDTO;
 import com.spring.admin.modules.sys.core.service.PatientInfoService;
 import com.spring.admin.security.util.SecurityUtil;
@@ -77,7 +78,7 @@ public class PatientInfoController {
     @PostMapping("/save")
     @Operation(summary = "保存信息")
     @PreAuthorize("hasAuthority('patient:save')")
-    public R<PatientInfo> save(HttpServletRequest request, @RequestBody PatientInfo vo) {
+    public R<PatientInfo> save(HttpServletRequest request, @RequestBody PatientInfoVO vo) {
         return patientInfoService.savePatientInfo(vo);
     }
 

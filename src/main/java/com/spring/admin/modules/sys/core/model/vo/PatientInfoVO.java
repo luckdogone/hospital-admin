@@ -1,5 +1,6 @@
 package com.spring.admin.modules.sys.core.model.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,6 +8,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -41,6 +43,13 @@ public class PatientInfoVO implements Serializable {
     @Schema(description = "体重 (单位: 公斤)")
     private BigDecimal weight;
 
+    /**
+     * bmi
+     */
+    @TableField(exist = false)
+    @Schema(description = "bmi = weight / ( height * height )")
+    private Double bmi;
+
     @Schema(description = "录入状态 (0: 未录入, 1: 录入中, 2: 已录入)")
     private Integer inputStatus;
 
@@ -48,13 +57,13 @@ public class PatientInfoVO implements Serializable {
     private String createdBy;
 
     @Schema(description = "创建时间")
-    private Date created;
+    private LocalDateTime created;
 
     @Schema(description = "更新者")
     private String modifiedBy;
 
     @Schema(description = "更新时间")
-    private Date modified;
+    private LocalDateTime modified;
 
     @Schema(description = "是否启用 (0: 禁用, 1: 启用)")
     private Integer isEnable;

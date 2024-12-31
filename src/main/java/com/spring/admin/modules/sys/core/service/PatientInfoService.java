@@ -11,6 +11,7 @@ import com.spring.admin.modules.sys.core.mapper.PatientInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.*;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
+import com.spring.admin.modules.sys.core.model.vo.PatientInfoVO;
 import com.spring.admin.modules.sys.core.model.vo.SearchQueryDTO;
 import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -94,36 +95,40 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
     /**
      * 保存信息
      *
-     * @param patientInfo .
+     * @param patientInfoVO .
      * @return .
      */
     @Transactional(rollbackFor = Exception.class)
-    public R<PatientInfo> savePatientInfo(PatientInfo patientInfo) {
-        patientInfo.setCreatedBy(SecurityUtil.getCurrentUsername());
-        patientInfo.setCreated(LocalDateTime.now());
-        patientInfo.setInputStatus(1);
-        patientInfo.setIsEnable(1);
-        patientInfo.setIsDel(1);
-        if (patientInfo == null) {
+    public R<PatientInfo> savePatientInfo(PatientInfoVO patientInfoVO) {
+        if (patientInfoVO == null) {
             return R.NG("患者信息不能为空");
         }
+        patientInfoVO.setCreatedBy(SecurityUtil.getCurrentUsername());
+        patientInfoVO.setCreated(LocalDateTime.now());
+        patientInfoVO.setInputStatus(1);
+        patientInfoVO.setIsEnable(1);
+        patientInfoVO.setIsDel(1);
 
         try {
             // 设置患者ID
-            patientInfo.setId(IdUtil.fastSimpleUUID());
+            patientInfoVO.setId(IdUtil.fastSimpleUUID());
 
             // 设置通用字段
-            setCommonFields(patientInfo);
+            setCommonFields(patientInfoVO);
+
+            PatientInfo patientInfo = new PatientInfo();
+
+            BeanUtil.copyProperties(patientInfoVO, patientInfo);
 
             // 保存患者信息
             if (!save(patientInfo)) {
                 return R.NG("保存患者信息失败");
             }
 
-            String patientId = patientInfo.getId();
+//            String patientId = patientInfo.getId();
 
             // 创建并保存各模块信息
-            if (!createAndSaveModuleInfo(patientId)) {
+            if (!createAndSaveModuleInfo(patientInfoVO)) {
                 throw new RuntimeException("保存模块信息失败");
             }
 
@@ -145,20 +150,22 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
         }
     }
 
-    private boolean createAndSaveModuleInfo(String patientId) {
-        return createAndSaveGeneralInfo(patientId) &&
-                createAndSaveCaseInfo(patientId) &&
-                createAndSaveSurgicalInfo(patientId) &&
-                createAndSaveAdjuvantInfo(patientId) &&
-                createAndSaveRadiationInfo(patientId) &&
-                createAndSaveEndocrineInfo(patientId) &&
-                createAndSaveNeoadjuvantInfo(patientId);
+    private boolean createAndSaveModuleInfo(PatientInfoVO patientInfoVO) {
+        return createAndSaveGeneralInfo(patientInfoVO) &&
+                createAndSaveCaseInfo(patientInfoVO.getId()) &&
+                createAndSaveSurgicalInfo(patientInfoVO.getId()) &&
+                createAndSaveAdjuvantInfo(patientInfoVO.getId()) &&
+                createAndSaveRadiationInfo(patientInfoVO.getId()) &&
+                createAndSaveEndocrineInfo(patientInfoVO.getId()) &&
+                createAndSaveNeoadjuvantInfo(patientInfoVO.getId());
     }
 
-    private boolean createAndSaveGeneralInfo(String patientId) {
+    private boolean createAndSaveGeneralInfo(PatientInfoVO patientInfoVO) {
         GeneralInfo generalInfo = new GeneralInfo();
         setCommonFields(generalInfo);
-        generalInfo.setPatientId(patientId);
+        generalInfo.setPatientId(patientInfoVO.getId());
+        generalInfo.setSurgicalNum(patientInfoVO.getSurgicalNum());
+        generalInfo.setCaseNo(patientInfoVO.getCaseNo());
         return generalInfoService.saveGeneralInfo(generalInfo) != null;
     }
 
