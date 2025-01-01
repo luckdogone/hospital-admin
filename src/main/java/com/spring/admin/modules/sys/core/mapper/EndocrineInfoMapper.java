@@ -2,6 +2,7 @@ package com.spring.admin.modules.sys.core.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
 import com.spring.admin.modules.sys.core.model.entity.EndocrineInfo;
 import com.spring.admin.modules.sys.core.model.query.EndocrineInfoQuery;
 import org.apache.ibatis.annotations.Param;
@@ -24,6 +25,8 @@ public interface EndocrineInfoMapper extends BaseMapper<EndocrineInfo> {
     List<EndocrineInfo> queryPage(Page<EndocrineInfo> page, @Param("query") EndocrineInfoQuery query);
 
     List<String> getIdsByPatientId(String patientId, Integer isDel);
+
+    List<EndocrineInfo> getInfoByPatientId(String patientId, Integer isDel);
 
     /**
      * 获取相关表的input_status

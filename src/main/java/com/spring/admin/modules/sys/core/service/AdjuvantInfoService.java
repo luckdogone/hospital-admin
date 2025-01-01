@@ -7,6 +7,7 @@ import com.spring.admin.base.R;
 import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.AdjuvantInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.AdjuvantInfo;
+import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.query.AdjuvantInfoQuery;
 import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -98,5 +99,9 @@ public class AdjuvantInfoService extends BaseServiceImpl<AdjuvantInfoMapper, Adj
 
     public List<String> getIdsByPatientId(String patientId, Integer isDel) {
         return this.baseMapper.getIdsByPatientId(patientId, isDel);
+    }
+
+    public List<AdjuvantInfo> getInfoByPatientId(String patientId, Integer isDel) {
+        return this.baseMapper.getInfoByPatientId(patientId, isDel);
     }
 }

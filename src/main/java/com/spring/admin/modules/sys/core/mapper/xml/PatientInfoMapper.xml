@@ -24,6 +24,33 @@
             ELSE NULL
         END AS bmi
     </sql>
+
+    <select id="queryPageList" resultType="com.spring.admin.modules.sys.core.model.vo.PatientListInfoVO">
+        SELECT
+        <include refid="Base_patient"/>
+        from patient_info t
+        WHERE 1=1
+        <if test="query.phone != null and query.phone != ''">
+            and  t.phone = #{query.phone}
+        </if>
+        <if test="query.contactPhone != null and query.contactPhone != ''">
+            and t.contact_phone = #{query.contactPhone}
+        </if>
+        <if test="query.inputStatus != null and query.inputStatus != ''">
+            and t.input_status = #{query.inputStatus}
+        </if>
+        <if test="query.name != null and query.name != ''">
+            and t.name like concat('%',#{query.name},'%')
+        </if>
+        <if test="query.isEnable != null">
+            and t.is_enable = #{query.isEnable}
+        </if>
+        <if test="query.isDel != null">
+            and t.is_del = #{query.isDel}
+        </if>
+        order by t.created desc
+    </select>
+
     <select id="queryPage" resultType="com.spring.admin.modules.sys.core.model.entity.PatientInfo">
         SELECT
         <include refid="Base_patient"/>

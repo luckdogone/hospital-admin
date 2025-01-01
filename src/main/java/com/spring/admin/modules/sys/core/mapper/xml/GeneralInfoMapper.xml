@@ -58,6 +58,7 @@
         <if test="isDel != null">
             AND t.is_del = #{isDel}
         </if>
+        order by t.created desc
     </select>
 
     <select id="getRelatedInputStatus" resultType="java.lang.Integer">

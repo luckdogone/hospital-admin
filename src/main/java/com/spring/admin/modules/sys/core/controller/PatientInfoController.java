@@ -6,6 +6,7 @@ import com.spring.admin.data.domain.BasePage;
 import com.spring.admin.modules.sys.core.model.entity.*;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
 import com.spring.admin.modules.sys.core.model.vo.PatientInfoVO;
+import com.spring.admin.modules.sys.core.model.vo.PatientListInfoVO;
 import com.spring.admin.modules.sys.core.model.vo.SearchQueryDTO;
 import com.spring.admin.modules.sys.core.service.PatientInfoService;
 import com.spring.admin.security.util.SecurityUtil;
@@ -62,8 +63,8 @@ public class PatientInfoController {
     @GetMapping("/query/page")
     @Operation(summary = "分页查询")
     @PreAuthorize("hasAuthority('patient:query:page')")
-    public R<BasePage<PatientInfo>> getListPage(HttpServletRequest request, @ParameterObject PatientInfoQuery query) {
-        BasePage<PatientInfo> page = patientInfoService.queryPage(query);
+    public R<BasePage<PatientListInfoVO>> getListPage(HttpServletRequest request, @ParameterObject PatientInfoQuery query) {
+        BasePage<PatientListInfoVO> page = patientInfoService.queryPageList(query);
         return R.OK(page);
     }
 

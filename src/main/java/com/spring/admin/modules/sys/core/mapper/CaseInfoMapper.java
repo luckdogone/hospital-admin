@@ -2,6 +2,7 @@ package com.spring.admin.modules.sys.core.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.spring.admin.modules.sys.core.model.entity.AdjuvantInfo;
 import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
 import com.spring.admin.modules.sys.core.model.query.CaseInfoQuery;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
@@ -25,6 +26,8 @@ public interface CaseInfoMapper extends BaseMapper<CaseInfo> {
     List<CaseInfo> queryPage(Page<CaseInfo> page, @Param("query") CaseInfoQuery query);
 
     List<String> getIdsByPatientId(String patientId, Integer isDel);
+
+    List<CaseInfo> getInfoByPatientId(String patientId, Integer isDel);
 
     /**
      * 获取相关表的input_status

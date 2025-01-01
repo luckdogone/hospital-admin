@@ -6,6 +6,7 @@ import cn.hutool.core.util.IdUtil;
 import com.spring.admin.base.R;
 import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.RadiationInfoMapper;
+import com.spring.admin.modules.sys.core.model.entity.NeoadjuvantInfo;
 import com.spring.admin.modules.sys.core.model.entity.RadiationInfo;
 import com.spring.admin.modules.sys.core.model.query.RadiationInfoQuery;
 import com.spring.admin.security.util.SecurityUtil;
@@ -97,5 +98,9 @@ public class RadiationInfoService extends BaseServiceImpl<RadiationInfoMapper, R
 
     public List<String> getIdsByPatientId(String patientId, Integer isDel) {
         return this.baseMapper.getIdsByPatientId(patientId, isDel);
+    }
+
+    public List<RadiationInfo> getInfoByPatientId(String patientId, Integer isDel) {
+        return this.baseMapper.getInfoByPatientId(patientId, isDel);
     }
 }

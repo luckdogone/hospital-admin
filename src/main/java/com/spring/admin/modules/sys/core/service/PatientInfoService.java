@@ -11,11 +11,15 @@ import com.spring.admin.modules.sys.core.mapper.PatientInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.*;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
+import com.spring.admin.modules.sys.core.model.util.AuthUtil;
 import com.spring.admin.modules.sys.core.model.vo.PatientInfoVO;
+import com.spring.admin.modules.sys.core.model.vo.PatientListInfoVO;
 import com.spring.admin.modules.sys.core.model.vo.SearchQueryDTO;
 import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,12 +45,109 @@ public class PatientInfoService extends BaseServiceImpl<PatientInfoMapper, Patie
     private final EndocrineInfoService endocrineInfoService;
     private final NeoadjuvantInfoService neoadjuvantInfoService;
 
+    @Autowired
+    private AuthUtil authUtil;
+
     public BasePage<PatientInfo> searchQueryPage(SearchQueryDTO searchQuery) {
         Page<PatientInfo> page = new Page<>(searchQuery.getCurrent(), searchQuery.getSize());
 //        System.out.println(searchQuery.getCurrent());
 //        System.out.println(searchQuery.getSize());
         List<PatientInfo> records = this.baseMapper.searchQueryPage(page, searchQuery);
 //        System.out.println(records);
+        return new BasePage<>(page.getCurrent(), page.getSize(), page.getTotal(), records);
+    }
+
+    /**
+     * 获取基础信息分页
+     *
+     * @param query .
+     * @return .
+     */
+    public BasePage<PatientListInfoVO> queryPageList(PatientInfoQuery query) {
+        Page<PatientListInfoVO> page = new Page<>(query.getCurrent(), query.getSize());
+        List<PatientListInfoVO> records = this.baseMapper.queryPageList(page, query);
+
+        records.forEach(patient -> {
+            String patientId = patient.getId();
+
+            // 使用工具类检查权限并获取数据
+            if (authUtil.hasGeneralInfoViewAuth()) {
+                try {
+                    List<GeneralInfo> generalInfos = generalInfoService.getInfoByPatientId(patientId, 1);
+                    if (!generalInfos.isEmpty()) {
+                        patient.setGeneralInfoList(generalInfos);
+                    }
+                } catch (Exception e) {
+                    log.error("当前用户没有权限查看一般资料", e);
+                }
+            }
+
+            if (authUtil.hasCaseInfoViewAuth()) {
+                try {
+                    List<CaseInfo> caseInfos = caseInfoService.getInfoByPatientId(patientId, 1);
+                    if (!caseInfos.isEmpty()) {
+                        patient.setCaseInfoList(caseInfos);
+                    }
+                } catch (Exception e) {
+                    log.error("当前用户没有权限查看病历资料", e);
+                }
+            }
+
+            if (authUtil.hasSurgicalInfoViewAuth()) {
+                try {
+                    List<SurgicalInfo> surgicalInfos = surgicalInfoService.getInfoByPatientId(patientId, 1);
+                    if (!surgicalInfos.isEmpty()) {
+                        patient.setSurgicalInfoList(surgicalInfos);
+                    }
+                } catch (Exception e) {
+                    log.error("当前用户没有权限查看手术相关", e);
+                }
+            }
+
+            if (authUtil.hasAdjuvantInfoViewAuth()) {
+                try {
+                    List<AdjuvantInfo> adjuvantInfos = adjuvantInfoService.getInfoByPatientId(patientId, 1);
+                    if (!adjuvantInfos.isEmpty()) {
+                        patient.setAdjuvantInfoList(adjuvantInfos);
+                    }
+                } catch (Exception e) {
+                    log.error("当前用户没有权限查看辅助治疗", e);
+                }
+            }
+
+            if (authUtil.hasRadiationInfoViewAuth()) {
+                try {
+                    List<RadiationInfo> radiationInfos = radiationInfoService.getInfoByPatientId(patientId, 1);
+                    if (!radiationInfos.isEmpty()) {
+                        patient.setRadiationInfoList(radiationInfos);
+                    }
+                } catch (Exception e) {
+                    log.error("当前用户没有权限查看放射治疗", e);
+                }
+            }
+
+            if (authUtil.hasNeoadjuvantInfoViewAuth()) {
+                try {
+                    List<NeoadjuvantInfo> neoadjuvantInfos = neoadjuvantInfoService.getInfoByPatientId(patientId, 1);
+                    if (!neoadjuvantInfos.isEmpty()) {
+                        patient.setNeoadjuvantInfoList(neoadjuvantInfos);
+                    }
+                } catch (Exception e) {
+                    log.error("当前用户没有权限查看新辅助治疗", e);
+                }
+            }
+
+            if (authUtil.hasEndocrineInfoViewAuth()) {
+                try {
+                    List<EndocrineInfo> endocrineInfos = endocrineInfoService.getInfoByPatientId(patientId, 1);
+                    if (!endocrineInfos.isEmpty()) {
+                        patient.setEndocrineInfoList(endocrineInfos);
+                    }
+                } catch (Exception e) {
+                    log.error("当前用户没有权限查看内分泌治疗", e);
+                }
+            }
+        });
         return new BasePage<>(page.getCurrent(), page.getSize(), page.getTotal(), records);
     }
 

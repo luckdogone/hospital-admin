@@ -13,8 +13,6 @@ import com.spring.admin.modules.sys.core.mapper.GeneralInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.FollowUpRecord;
 import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.query.GeneralInfoQuery;
-import com.spring.admin.modules.sys.core.model.vo.FollowUpRecordVO;
-import com.spring.admin.modules.sys.system.model.entity.SysRole;
 import com.spring.admin.security.util.SecurityUtil;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -25,16 +23,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**

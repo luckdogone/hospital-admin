@@ -3,6 +3,7 @@ package com.spring.admin.modules.sys.core.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
+import com.spring.admin.modules.sys.core.model.entity.EndocrineInfo;
 import com.spring.admin.modules.sys.core.model.entity.NeoadjuvantInfo;
 import com.spring.admin.modules.sys.core.model.query.NeoadjuvantInfoQuery;
 import org.apache.ibatis.annotations.Param;
@@ -24,6 +25,8 @@ public interface NeoadjuvantInfoMapper extends BaseMapper<NeoadjuvantInfo> {
     List<NeoadjuvantInfo> queryPage(Page<NeoadjuvantInfo> page, @Param("query") NeoadjuvantInfoQuery query);
 
     List<String> getIdsByPatientId(String patientId, Integer isDel);
+
+    List<NeoadjuvantInfo> getInfoByPatientId(String patientId, Integer isDel);
 
     /**
      * 获取相关表的input_status

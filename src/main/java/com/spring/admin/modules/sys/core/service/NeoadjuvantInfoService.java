@@ -7,6 +7,7 @@ import com.spring.admin.base.R;
 import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.NeoadjuvantInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
+import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.entity.NeoadjuvantInfo;
 import com.spring.admin.modules.sys.core.model.query.NeoadjuvantInfoQuery;
 import com.spring.admin.security.util.SecurityUtil;
@@ -98,5 +99,9 @@ public class NeoadjuvantInfoService extends BaseServiceImpl<NeoadjuvantInfoMappe
 
     public List<String> getIdsByPatientId(String patientId, Integer isDel) {
         return this.baseMapper.getIdsByPatientId(patientId, isDel);
+    }
+
+    public List<NeoadjuvantInfo> getInfoByPatientId(String patientId, Integer isDel) {
+        return this.baseMapper.getInfoByPatientId(patientId, isDel);
     }
 }

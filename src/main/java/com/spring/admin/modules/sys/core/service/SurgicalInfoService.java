@@ -8,6 +8,7 @@ import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.CaseInfoMapper;
 import com.spring.admin.modules.sys.core.mapper.SurgicalInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
+import com.spring.admin.modules.sys.core.model.entity.RadiationInfo;
 import com.spring.admin.modules.sys.core.model.entity.SurgicalInfo;
 import com.spring.admin.modules.sys.core.model.query.SurgicalInfoQuery;
 import com.spring.admin.security.util.SecurityUtil;
@@ -65,14 +66,10 @@ public class SurgicalInfoService extends BaseServiceImpl<SurgicalInfoMapper, Sur
      */
     public R<SurgicalInfo> updateById(String id, SurgicalInfo vo) {
         SurgicalInfo surgicalInfo = getById(id);
-        System.out.println(surgicalInfo);
-        System.out.println(id);
-        System.out.println(vo);
         BeanUtil.copyProperties(vo, surgicalInfo, "id","inputStatus","isEnable","isDel");
         surgicalInfo.setInputStatus(2);
         updateById(surgicalInfo);
         List<Integer> allInputStatus = this.baseMapper.getRelatedInputStatus(vo.getPatientId());
-        System.out.println(allInputStatus);
         boolean allStatusesAreTwo = allInputStatus.stream().allMatch(status -> status == 2);
         if (allStatusesAreTwo) {
             this.baseMapper.updatePatientInputStatus(vo.getPatientId(), 2);
@@ -103,5 +100,9 @@ public class SurgicalInfoService extends BaseServiceImpl<SurgicalInfoMapper, Sur
 
     public List<String> getIdsByPatientId(String patientId, Integer isDel) {
         return this.baseMapper.getIdsByPatientId(patientId, isDel);
+    }
+
+    public List<SurgicalInfo> getInfoByPatientId(String patientId, Integer isDel) {
+        return this.baseMapper.getInfoByPatientId(patientId, isDel);
     }
 }

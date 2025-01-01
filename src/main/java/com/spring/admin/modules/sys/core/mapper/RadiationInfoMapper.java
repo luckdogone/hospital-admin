@@ -2,6 +2,7 @@ package com.spring.admin.modules.sys.core.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.spring.admin.modules.sys.core.model.entity.NeoadjuvantInfo;
 import com.spring.admin.modules.sys.core.model.entity.RadiationInfo;
 import com.spring.admin.modules.sys.core.model.query.RadiationInfoQuery;
 import org.apache.ibatis.annotations.Param;
@@ -23,6 +24,8 @@ public interface RadiationInfoMapper extends BaseMapper<RadiationInfo> {
     List<RadiationInfo> queryPage(Page<RadiationInfo> page, @Param("query") RadiationInfoQuery query);
 
     List<String> getIdsByPatientId(String patientId, Integer isDel);
+
+    List<RadiationInfo> getInfoByPatientId(String patientId, Integer isDel);
 
     /**
      * 获取相关表的input_status

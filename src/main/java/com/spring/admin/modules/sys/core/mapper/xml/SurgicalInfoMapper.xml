@@ -95,6 +95,17 @@
         </if>
     </select>
 
+    <select id="getInfoByPatientId" resultType="com.spring.admin.modules.sys.core.model.entity.SurgicalInfo">
+        SELECT
+        <include refid="Base_surgical"/>
+        FROM surgical_info t
+        WHERE t.patient_id = #{patientId}
+        <if test="isDel != null">
+            AND t.is_del = #{isDel}
+        </if>
+        order by t.created desc
+    </select>
+
     <select id="getRelatedInputStatus" resultType="java.lang.Integer">
         SELECT g.input_status
         FROM patient_info p

@@ -3,6 +3,7 @@ package com.spring.admin.modules.sys.core.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spring.admin.modules.sys.core.model.entity.AdjuvantInfo;
+import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.query.AdjuvantInfoQuery;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,6 +25,8 @@ public interface AdjuvantInfoMapper extends BaseMapper<AdjuvantInfo> {
     List<AdjuvantInfo> queryPage(Page<AdjuvantInfo> page, @Param("query") AdjuvantInfoQuery query);
 
     List<String> getIdsByPatientId(String patientId, Integer isDel);
+
+    List<AdjuvantInfo> getInfoByPatientId(String patientId, Integer isDel);
 
     /**
      * 获取相关表的input_status

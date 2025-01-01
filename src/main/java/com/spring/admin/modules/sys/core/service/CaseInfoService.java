@@ -6,6 +6,7 @@ import cn.hutool.core.util.IdUtil;
 import com.spring.admin.base.R;
 import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.CaseInfoMapper;
+import com.spring.admin.modules.sys.core.model.entity.AdjuvantInfo;
 import com.spring.admin.modules.sys.core.model.entity.CaseInfo;
 import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.query.CaseInfoQuery;
@@ -101,5 +102,9 @@ public class CaseInfoService extends BaseServiceImpl<CaseInfoMapper, CaseInfo> {
 
     public List<String> getIdsByPatientId(String patientId, Integer isDel) {
         return this.baseMapper.getIdsByPatientId(patientId, isDel);
+    }
+
+    public List<CaseInfo> getInfoByPatientId(String patientId, Integer isDel) {
+        return this.baseMapper.getInfoByPatientId(patientId, isDel);
     }
 }

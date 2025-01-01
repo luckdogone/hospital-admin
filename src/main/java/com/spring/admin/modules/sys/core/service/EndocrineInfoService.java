@@ -7,6 +7,7 @@ import com.spring.admin.base.R;
 import com.spring.admin.core.service.BaseServiceImpl;
 import com.spring.admin.modules.sys.core.mapper.EndocrineInfoMapper;
 import com.spring.admin.modules.sys.core.model.entity.EndocrineInfo;
+import com.spring.admin.modules.sys.core.model.entity.GeneralInfo;
 import com.spring.admin.modules.sys.core.model.query.EndocrineInfoQuery;
 import com.spring.admin.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -98,5 +99,9 @@ public class EndocrineInfoService extends BaseServiceImpl<EndocrineInfoMapper, E
 
     public List<String> getIdsByPatientId(String patientId, Integer isDel) {
         return this.baseMapper.getIdsByPatientId(patientId, isDel);
+    }
+
+    public List<EndocrineInfo> getInfoByPatientId(String patientId, Integer isDel) {
+        return this.baseMapper.getInfoByPatientId(patientId, isDel);
     }
 }

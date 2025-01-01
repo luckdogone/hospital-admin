@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.spring.admin.modules.sys.core.model.entity.PatientInfo;
 import com.spring.admin.modules.sys.core.model.query.PatientInfoQuery;
+import com.spring.admin.modules.sys.core.model.vo.PatientListInfoVO;
 import com.spring.admin.modules.sys.core.model.vo.SearchQueryDTO;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,6 +17,15 @@ import java.util.List;
  * @date 2024/8/1
  */
 public interface PatientInfoMapper extends BaseMapper<PatientInfo> {
+
+    /**
+     * 分页查询
+     *
+     * @param page  .
+     * @param query .
+     * @return .
+     */
+    List<PatientListInfoVO> queryPageList(Page<PatientListInfoVO> page, @Param("query") PatientInfoQuery query);
 
     /**
      * 分页查询
